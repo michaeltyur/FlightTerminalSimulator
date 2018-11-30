@@ -1,0 +1,3 @@
+[submodule "FlightTerminalSimulator"]
+	path = FlightTerminalSimulator
+	url = https://github.com/michaeltyur/FlightTerminalSimulator

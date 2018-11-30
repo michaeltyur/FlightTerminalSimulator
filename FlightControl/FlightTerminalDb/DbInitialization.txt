@@ -1,0 +1,5 @@
+﻿connection string => @"Server=.\SQLEXPRESS;Database=FlightTerminalDb;Trusted_Connection=True;" //for local db
+
+*Package Manager Console*
+Add-Migration Initial
+Update-Database

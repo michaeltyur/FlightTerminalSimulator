@@ -1,0 +1,9 @@
+<div class="plane">
+   <div class="alert alert-success m-0 p-0" role="alert">{{flight.from}}</div>
+    <img src="../assets/plane2.png" alt="plane"/>
+    <div *ngIf="flight.fuel < 30"
+          class="alert alert-danger low-fuel" 
+          role="alert">
+    Low fuel: {{flight.fuel}}
+</div>
+

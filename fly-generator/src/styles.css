@@ -1,0 +1,6 @@
+html,body{
+    height: 100%;
+    background: url("assets/imageBig.jpg");
+    background-repeat:no-repeat;
+    background-size: 100% 100%;
+}/* You can add global styles to this file, and also import other style files */

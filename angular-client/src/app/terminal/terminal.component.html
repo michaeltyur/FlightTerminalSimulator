@@ -1,0 +1,62 @@
+<div class="container-fluid">
+
+  <div class="row">
+      <!-- runway 4 -->
+    <div class="col-6">
+      <app-runway4></app-runway4>   
+    </div>
+     <!-- step 3 -->
+    <div class="col h-75">
+      <app-step3></app-step3>
+    </div>
+    <!-- step 2 -->
+    <div class="col h-75">
+      <app-step2></app-step2>
+    </div>
+    <!-- step 1 -->
+    <div class="col h-75">
+        <app-step1></app-step1>
+      </div>
+  </div>   
+
+  <div class="row">
+    <!-- parking 5 -->
+    <div class="col-4">
+      <app-parking5></app-parking5>
+    </div>
+    <!-- parking 8 -->
+    <div class="col-4">
+      <app-parking8></app-parking8>
+    </div>
+    <!-- terminal info -->
+    <div class="col-4">
+      <app-terminal-info></app-terminal-info>       
+    </div>
+  </div>
+
+  <div class="row">
+  <!-- boarding 6 -->
+      <div class="col-4">
+        <app-boarding6></app-boarding6>
+      </div>
+  <!-- boarding 7 -->
+      <div class="col-4">
+        <app-boarding7></app-boarding7>
+      </div>
+  <!-- flights info -->
+      <div class="col-4">
+          <div class="list-group">             
+              <div class="alert m-0" 
+                  role="alert" 
+                  style="width: 18rem;" 
+                  *ngFor="let msg of msgs"
+                  [ngClass]="msg.type">
+                  {{msg.content}}
+          </div>
+         </div>
+      </div>
+  </div>
+</div>
+
+  
+

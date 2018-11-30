@@ -1,0 +1,14 @@
+<ul class="message-container">
+  <li class="alert alert-primary" *ngFor="let flight of flights" role="alert" rundomBackGround>
+    <h6 class="card-subtitle mb-2">flight humber: {{flight.id}}</h6>
+    <hr>
+    <p class="m-0">from: {{flight.from}}</p>
+    <p class="m-0">number of passagers: {{flight.numberOfPass}}</p>
+    <p class="m-0">speed: {{flight.speed}}</p>
+    <p class="m-0">distance to terminal: {{flight.distanceToTerminal}}</p>
+    <p class="m-0">fuel: {{flight.fuel}}</p>
+  </li>
+
+</ul>
+
+

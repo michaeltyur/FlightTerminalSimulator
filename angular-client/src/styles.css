@@ -1,0 +1,30 @@
+html,body{
+  width: 100% !important;
+  height: 100%!important;
+  overflow: hidden;
+}
+.container-fluid{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.col .col-6 .col-4{
+  margin: 0!important;
+  padding: 0!important;
+}
+.row{
+  margin: 0!important;
+  padding: 0!important;
+}
+
+@keyframes ann-low-fuel {
+  0%   { transform: scale(1, 1)}
+  33%  { transform: scale(1.01, 1.01);}
+  66%  { transform: scale(0.95, 0.95);}
+  100%  { transform: scale(1, 1)}
+}
+.plane .low-fuel{
+  left: 5% !important;
+}
+.step4-landing .low-fuel{
+  left: 20% !important;
+}

@@ -1,0 +1,9 @@
+<div class="container-fluid"> 
+    <div *ngFor="let plane of flights"
+         class="plane"
+         [ngClass]="{'step4-landing': flights[0] && flights[0].planeTerminalState == 4,
+                    'step9-takeoff': flights[0] && flights[0].planeTerminalState == 9}"
+          (click)="open(plane)">
+          <app-plane [flight]="plane"></app-plane>
+    </div>
+</div>

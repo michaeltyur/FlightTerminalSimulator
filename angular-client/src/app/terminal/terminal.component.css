@@ -1,0 +1,12 @@
+
+.container-fluid{
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.row{
+    height: 33% !important;
+}
+.list-group{
+    margin-top: -5%;
+}

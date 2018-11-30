@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="alert mt-3"  role="alert" *ngIf="alertMsg" [ngClass]="alertMsg.type">
+        {{alertMsg.content}}
+    </div>
+  <div class="row mt-5" >
+    <div class="col-6">
+
+      <div class="card mt-5 ml-5" 
+           style="width: 20rem;height: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Fly Generator</h5>
+          <p class="card-text">Press start for start generation</p>
+            <div class="input-group pl-1 pr-3 mb-2 timer-input">
+              <input type="number" 
+                     class="form-control" 
+                     placeholder="time" 
+                     aria-label="Time" 
+                     aria-describedby="button-addon2"
+                     min="2"
+                     max="10"
+                     value="timeInterval"
+                     #timeInput>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" 
+                        type="button" 
+                        (click)="setTimer(timeInput.value)"
+                        id="button-addon2">Set Time</button>
+            </div>
+          </div>                   
+       <div class="row">
+         <div class="col-4">
+              <button type="button" 
+                  class="btn btn-danger" 
+                  (click)="startFlyGeneration()">Start</button> 
+         </div>
+         
+         <div class="col-4">
+          <button type="button" 
+              class="btn btn-warning startOnceButton" 
+              (click)="startOnce()">Start Once</button> 
+         </div>
+         <div class="col-4">
+           
+           <button type="button" 
+                  class="btn btn-dark" 
+                  (click)="stopFlyGeneration()">Stop</button>
+         </div>
+       </div>                                               
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <app-message class="message-block"></app-message>
+    </div>
+  </div>
+</div>

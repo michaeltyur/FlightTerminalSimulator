@@ -1,0 +1,8 @@
+<div class="container-fluid"> 
+    <p class="position-absolute"><span class="badge badge-primary badge-pill">{{flights.length}}</span></p>
+    <div *ngFor="let plane of flights"
+         class="plane step5-parking m-0"
+         (click)="open(plane)">
+         <app-plane [flight]="plane"></app-plane>
+    </div>
+</div>

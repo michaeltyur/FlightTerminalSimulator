@@ -1,0 +1,17 @@
+.card{
+    background-image: url("../../assets/imageSmall.jpg");
+    background-repeat: repeat;
+    background-size: 100% 100%;  
+
+    float: none; /* Added */
+}
+
+/* .card p{
+    margin-top: 7rem !important;
+} */
+.startOnceButton{
+    margin-left: -21px !important;
+}
+.timer-input{
+    margin-top: 6rem ;
+}

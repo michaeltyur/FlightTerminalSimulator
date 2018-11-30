@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="modal-header">
+    <h4 class="modal-title">Flight Info</h4>
+    <button type="button" 
+            class="close" 
+            aria-label="Close" 
+           (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>from: <span>{{flight.from}}</span></p>
+    <!-- <p>pilot: <span>{{flight.nameOfСhiefPilot}}</span></p> -->
+    <p>number of passagers: <span>{{flight.numberOfPass}}</span></p>
+    <p>fuel(%): <span>{{flight.fuel}}</span></p>
+    <p>speed(km): <span>{{flight.speed}}</span></p>
+    <p>terminal state: <span>{{flight.planeTerminalState}}</span> </p>
+    <p>distance to terminal: <span>{{flight.distanceToTerminal}}</span> </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+</div>

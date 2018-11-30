@@ -1,0 +1,11 @@
+<div class="container-fluid"> 
+      <p class="position-absolute"> <span class="badge badge-primary badge-pill">{{flights.length}}</span></p> 
+      <div *ngFor="let plane of flights; let i = index" 
+            [attr.data-index]="i"
+            class="plane step2"
+            [style.top.%]="i*17+13"
+            [style.left.%]="'25'"
+            (click)="open(plane)">
+            <app-plane [flight]="plane"></app-plane>
+      </div>
+</div>
