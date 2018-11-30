@@ -1,5 +1,7 @@
 # FlightTerminalSimulator
 **Asp.net core, signalR based project + angular clients**<br />
+![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
 The purpose of the application: airport simulation.
 1)	Clients :
     a) Flights generator (client) – ui for outgoing flights, based on angular
