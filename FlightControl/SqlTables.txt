@@ -1,0 +1,21 @@
+CREATE TABLE Flights(
+    Id uniqueidentifier,
+    Created datetime2(7),
+    Modified datetime2(7),
+    NameOf—hiefPilot varchar(MAX),
+    [From] varchar(MAX) ,
+    Speed int,
+    NumberOfPass int,
+    Fuel int,
+    Image varchar(MAX),
+    DistanceToTerminal int,
+    PlaneTerminalState int
+);
+
+CREATE TABLE LogMsgs(
+    Id uniqueidentifier,
+    Created datetime2(7) null,
+    Modified datetime2(7) null,
+    Message varchar(MAX),
+    FlightId varchar(MAX) 
+);

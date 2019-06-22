@@ -1,0 +1,11 @@
+{
+    "/api/*": {
+      "target": "http://localhost:12345",
+      "secure": false,
+      "pathRewrite": {
+        "^api/terminal": "/terminal",
+        "^api/flight":"/test"
+      }
+  }
+}
+   
