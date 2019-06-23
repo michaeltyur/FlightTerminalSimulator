@@ -53,10 +53,10 @@ namespace FlightControl.Core
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "wwwroot";
-            });
+            //services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "wwwroot";
+            //});
 
  
 
@@ -94,19 +94,24 @@ namespace FlightControl.Core
             });
 
             app.UseMvc();
-            app.UseSpaStaticFiles();
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+            // app.UseSpaStaticFiles();
+            //    app.UseSpa(spa =>
+            //    {
+            //        // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //        // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "wwwroot";
+            //        spa.Options.SourcePath = "wwwroot";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+            //        if (env.IsDevelopment())
+            //        {
+            //            spa.UseAngularCliServer(npmScript: "start");
+            //        }
+            //    });
+            DefaultFilesOptions options = new DefaultFilesOptions();
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("index.html");
+            app.UseDefaultFiles(options);
+            app.UseStaticFiles();
         }
     }
 }
