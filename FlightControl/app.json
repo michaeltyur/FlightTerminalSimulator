@@ -10,7 +10,7 @@
     },
     "LAUNCH_ASSEMBLY_NAME": {
       "description": "The assembly name, that will be used to run app using Kestrel",
-      "value": "WebApp.dll"
+      "value": "FlightControl.dll"
     }
   },
   "buildpacks": [
