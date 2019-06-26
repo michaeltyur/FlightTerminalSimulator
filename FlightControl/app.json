@@ -6,7 +6,7 @@
   "env": {
     "PUBLISH_APP_DIR": {
       "description": "The relative path to main published project",
-      "value" : "/src/WebApp"
+      "value" : "/"
     },
     "LAUNCH_ASSEMBLY_NAME": {
       "description": "The assembly name, that will be used to run app using Kestrel",
