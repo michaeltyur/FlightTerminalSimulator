@@ -22,7 +22,7 @@ export class FlightService {
   msgService: MessageService;
 
   flightControlUrl: string = "/api/flight";
-  remoteUrl = "http://FlightTerminalSimulator.somee.com/terminal";
+  remoteUrl = "http://michaelt-001-site1.btempurl.com/terminal";
   localUrl = "http://localhost:12345/terminal";
   currentUrl;
 
@@ -40,7 +40,7 @@ export class FlightService {
   }
   starthubConnection() {
     this._hubConnection = new HubConnectionBuilder()
-      .withUrl(this.currentUrl)
+      .withUrl(this.remoteUrl)
       .build();
     this._hubConnection
       .start()

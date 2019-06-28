@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 
+
 namespace FlightControl.Core
 {
     public class Startup
@@ -44,7 +45,7 @@ namespace FlightControl.Core
                 .AllowAnyHeader()
                 .AllowAnyOrigin()
                 .AllowCredentials()
-                //.WithOrigins("http://localhost:4200")
+                .WithOrigins("http://michaelt-001-site1.btempurl.com/")
                 //.WithOrigins("http://localhost:4300")
                 ;
             }));
@@ -58,7 +59,10 @@ namespace FlightControl.Core
             //    configuration.RootPath = "wwwroot";
             //});
 
- 
+            //services.Configure<IISServerOptions>(options =>
+            //{
+            //    options.AutomaticAuthentication = false;
+            //});
 
         }
 

@@ -1,6 +1,6 @@
 {
     "/api/*": {
-      "target": "http://localhost:12345",
+      "target": "michaelt-001-site1.btempurl.com",
       "secure": false,
       "pathRewrite": {
         "^api/terminal": "/terminal",
