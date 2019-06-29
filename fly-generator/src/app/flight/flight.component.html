@@ -1,7 +1,7 @@
 <div class="container">
 
     <h5 *ngIf="alertMsg" class="connection-info text-center mt-4"><span class="badge badge-pill p-2" 
-      [class.badge-info]="alertMsg.connectionStatus==='info'"
+      [class.badge-success]="alertMsg.connectionStatus==='success'"
       [class.badge-danger]="alertMsg.connectionStatus==='danger'"
       [class.badge-warning]="alertMsg.connectionStatus==='warning'">{{alertMsg.content}}</span></h5> 
 
