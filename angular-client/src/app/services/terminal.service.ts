@@ -13,16 +13,22 @@ export class TerminalService {
   terminalEmitter$ = new EventEmitter();
   selectedFlight$ = new EventEmitter<Flight>();
 
+  connectionStatus$= new EventEmitter();;
+
   constructor() {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl("http://michaelt-001-site1.btempurl.com/terminal")
       .build();
     this._hubConnection
       .start()
-      .then(() => console.log("Connection started!"))
+      .then(() => {
+        this.connectionStatus$.emit({connectionStatus:true,connectionInfo:"Connection started!"})
+        console.log("Connection started!");
+      })
       .catch(err => {
+        this.connectionStatus$.emit({connectionStatus:false,connectionInfo:"Error while establishing connection :("})
         console.error("Error while establishing connection :(");
-        location.reload();
+        //location.reload();
       });
 
     this._hubConnection.onclose(() => location.reload());
