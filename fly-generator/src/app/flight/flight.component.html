@@ -1,9 +1,16 @@
 <div class="container">
-  <div
+
+    <h5 *ngIf="alertMsg" class="connection-info text-center mt-4"><span class="badge badge-pill p-2" 
+      [class.badge-info]="alertMsg.connectionStatus==='info'"
+      [class.badge-danger]="alertMsg.connectionStatus==='danger'"
+      [class.badge-warning]="alertMsg.connectionStatus==='warning'">{{alertMsg.content}}</span></h5> 
+
+  <!-- <div
     class="alert mt-3"
     role="alert"
     *ngIf="alertMsg"
-    [ngClass]="alertMsg.type">{{ alertMsg.content }}</div>
+    [ngClass]="alertMsg.type">{{ alertMsg.content }}</div> -->
+
   <div class="row">
     <!-- Card -->
     <div class="col-sm-6">

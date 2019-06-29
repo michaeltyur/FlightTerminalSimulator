@@ -1,4 +1,4 @@
 class AlertMsg{
-    type:string;
+    connectionStatus:string;
     content:string;
 }

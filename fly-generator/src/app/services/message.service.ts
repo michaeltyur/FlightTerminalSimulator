@@ -15,8 +15,8 @@ clearMsg$=new EventEmitter<boolean>();
     if(flight)
       this.message$.emit(flight);
   }
-  alertMsgEmitter(type:string,content:string){
-    this.alertMsg$.emit({type:type,content:content});
+  alertMsgEmitter(connectionStatus:string,content:string){
+    this.alertMsg$.emit({connectionStatus:connectionStatus,content:content});
   }
   clearMsg():void{
     this.clearMsg$.emit(true);

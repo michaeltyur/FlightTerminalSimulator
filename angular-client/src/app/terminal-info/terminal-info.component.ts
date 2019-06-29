@@ -11,6 +11,8 @@ export class TerminalInfoComponent implements OnInit {
 
   flights : Flight[]=[];
   counters:number[]=[];
+   connectionInfo:string;
+   connectionStatus:boolean;
  
 
   constructor(private terminalService: TerminalService) {
@@ -22,7 +24,11 @@ export class TerminalInfoComponent implements OnInit {
    }
 
   ngOnInit() {
-  
+    this.terminalService.connectionStatus$.subscribe(res=>
+      {
+        this.connectionStatus=res.connectionStatus;
+        this.connectionInfo=res.connectionInfo;
+      });
   }
  fillZoneCounters():void{
   this.counters=[0,0,0,0,0,0,0,0,0];

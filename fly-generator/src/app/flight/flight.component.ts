@@ -15,13 +15,16 @@ export class FlightComponent implements OnInit {
   alertMsg:AlertMsg;
   timeInterval:number;
   flight;
+  connectionStatus:boolean;
 
   constructor(
              private flightService:FlightService,
              private msgService:MessageService) { 
 
     this.timeInterval=3;
-    msgService.alertMsg$.subscribe(res=>this.alertMsg=res);
+    msgService.alertMsg$.subscribe(res=>{
+      this.alertMsg=res;
+    });
 
   }
 

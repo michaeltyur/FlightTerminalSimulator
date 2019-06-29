@@ -12,8 +12,8 @@ import { TerminalService } from '../services/terminal.service';
 export class TerminalComponent implements OnInit {
 
   private _hubConnection: HubConnection;
-  connectionInfo:string="nnhnn";
-  connectionStatus:boolean;
+  // connectionInfo:string="nnhnn";
+  // connectionStatus:boolean;
 
   msgs: Message[] = [];
   closeResult: string;
@@ -27,11 +27,7 @@ export class TerminalComponent implements OnInit {
       {
         this.selectedFlight=res
       });
-      terminalService.connectionStatus$.subscribe(res=>
-        {
-          this.connectionStatus=res.connectionStatus;
-          this.connectionInfo=res.connectionInfo;
-        });
+ 
     this.flights = [];
   }
 

@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable, OnInit, EventEmitter } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Flight } from "../models/flight";
 import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
@@ -21,6 +21,7 @@ export class FlightService {
   connectTimer;
   time: number;
   msgService: MessageService;
+  connectionStatus$=new EventEmitter();
 
   flightControlUrl: string = "/api/flight";
   remoteUrl = "http://michaelt-001-site1.btempurl.com/terminal";
@@ -51,7 +52,7 @@ export class FlightService {
           clearInterval(this.connectTimer);
         }
         this.messageService.alertMsgEmitter(
-          "alert-success",
+          "success",
           "Connection started!"
         );
       })
@@ -59,7 +60,7 @@ export class FlightService {
         console.error("Error while establishing connection :(");
 
         this.messageService.alertMsgEmitter(
-          "alert-danger",
+          "danger",
           "Error while establishing connection :("
         );
       });
@@ -83,7 +84,7 @@ export class FlightService {
   tryConnect(): void {
     this.connectTimer = setInterval(() => {
       this.messageService.alertMsgEmitter(
-        "alert-warning",
+        "warning",
         "Connection will be restarted"
       );
       this.starthubConnection();
