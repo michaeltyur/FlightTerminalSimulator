@@ -1,6 +1,7 @@
-<ul class="message-container">
+<ul class="message-container d-flex flex-column justify-content-center">
   <li class="alert alert-primary" *ngFor="let flight of flights" role="alert" rundomBackGround>
-    <h6 class="card-subtitle mb-2">flight humber: {{flight.id}}</h6>
+    <h6 class="card-subtitle mb-2"><p class="mb-0">flight humber:</p> 
+                                   <p>{{flight.id}}</p> </h6>
     <hr>
     <p class="m-0">from: {{flight.from}}</p>
     <p class="m-0">number of passagers: {{flight.numberOfPass}}</p>

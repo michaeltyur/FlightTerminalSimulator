@@ -2,4 +2,18 @@
     padding-bottom: 5px !important;
     display:inline-block;
     margin: 5px;
+    width: 17em;
+    margin-right: auto;
+    margin-left: auto;
 }
+.msg-out-fly{
+    position: relative;
+    -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+    animation-name: animation-fly;
+    animation-duration: 2s;
+}
+@keyframes animation-fly {
+    0%   {left:0px; top:0px;}
+    100% { left:100px; top:-100px;}
+  }

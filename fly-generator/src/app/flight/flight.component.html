@@ -3,18 +3,32 @@
     class="alert mt-3"
     role="alert"
     *ngIf="alertMsg"
-    [ngClass]="alertMsg.type"
-  >
-    {{ alertMsg.content }}
-  </div>
-  <div class="row mt-5">
+    [ngClass]="alertMsg.type">{{ alertMsg.content }}</div>
+  <div class="row">
+    <!-- Card -->
     <div class="col-sm-6">
       <div class="card mt-5 ml-auto mr-auto" style="width: 20rem;">
         <div class="card-body">
           <h5 class="card-title text-danger">Fly Generator</h5>
 
-         <div class="row" style="margin-top: 12em;">
-            <div class="col text-warning">
+           <!-- Flight Info -->
+           <div style="height: 14em;">
+                <div *ngIf="flight" class="alert alert-primary flight-info mt-0 mb-0 d-sm-none d-block" role="alert" rundomBackGround>
+              <h6 class="card-subtitle"><p class="mb-0">flight humber:</p> 
+                                             <p>{{flight.id}}</p> </h6>
+              <hr class="mt-0 mb-0">
+              <p class="m-0">from: {{flight.from}}</p>
+              <p class="m-0">number of passagers: {{flight.numberOfPass}}</p>
+              <p class="m-0">speed: {{flight.speed}}</p>
+              <p class="m-0">distance to terminal: {{flight.distanceToTerminal}}</p>
+              <p class="m-0">fuel: {{flight.fuel}}</p>
+           </div>
+           </div>
+        
+
+          <!-- Interval -->
+         <div class="row" >
+            <div class="col text-dark">
               <h6>set interval</h6> 
             </div>
           </div>
@@ -39,13 +53,13 @@
 
        <!-- Buttons -->
        <div class="row mt-4">
-          <div class="col text-warning text-center">
+          <div class="col text-dark text-center">
             <h6>start</h6> 
           </div>
-          <div class="col text-warning text-center">
+          <div class="col text-dark text-center">
               <h6>start once</h6> 
             </div>
-            <div class="col text-warning text-center">
+            <div class="col text-dark text-center">
                 <h6>stop</h6> 
               </div>
         </div>
@@ -78,8 +92,8 @@
       </div>
     </div>
 
-    <div class="col-sm-6">
-      <app-message class="message-block ml-auto mr-auto"></app-message>
+    <div class="col-sm-6 d-flex justify-content-center">
+      <app-message class="message-block d-none d-sm-block"></app-message>
     </div>
   </div>
 </div>
