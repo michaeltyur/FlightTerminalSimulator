@@ -51,7 +51,12 @@ namespace FlightControl.Core
                 .WithOrigins("http://localhost:4300/")
                 ;
             }));
-            services.AddSignalR();
+            services.AddSignalR(hubOptions =>
+            {
+                hubOptions.EnableDetailedErrors = true;
+              //  hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(20);
+            }
+            );
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
