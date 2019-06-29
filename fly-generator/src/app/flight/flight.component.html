@@ -1,9 +1,14 @@
-<div class="container">
+<div class="container h-100">
 
-    <h5 *ngIf="alertMsg" class="connection-info text-center mt-4"><span class="badge badge-pill p-2" 
+  <div class="row">
+    <div class="col">
+      <h5 *ngIf="alertMsg" class="connection-info text-center mt-4"><span class="badge badge-pill p-2" 
       [class.badge-success]="alertMsg.connectionStatus==='success'"
       [class.badge-danger]="alertMsg.connectionStatus==='danger'"
-      [class.badge-warning]="alertMsg.connectionStatus==='warning'">{{alertMsg.content}}</span></h5> 
+      [class.badge-warning]="alertMsg.connectionStatus==='warning'">{{alertMsg.content}}</span></h5>
+    </div>
+  </div>
+     
 
   <!-- <div
     class="alert mt-3"
@@ -11,10 +16,10 @@
     *ngIf="alertMsg"
     [ngClass]="alertMsg.type">{{ alertMsg.content }}</div> -->
 
-  <div class="row">
+  <div class="row h-100">
     <!-- Card -->
-    <div class="col-sm-6">
-      <div class="card mt-5 ml-auto mr-auto" style="width: 20rem;">
+    <div class="col-sm-6 d-flex align-items-center">
+      <div class="card ml-auto mr-auto" style="width: 20rem;">
         <div class="card-body">
           <h5 class="card-title text-danger">Fly Generator</h5>
 
