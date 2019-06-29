@@ -2,8 +2,8 @@ html{
     height: 100%;
 }
 body{
-    height: 93%;
-    /* overflow: hidden; */
+    height: 92%;
+    overflow: hidden;
     background: url("assets/imageBig.jpg");
     background-repeat:no-repeat;
     background-size: cover;
