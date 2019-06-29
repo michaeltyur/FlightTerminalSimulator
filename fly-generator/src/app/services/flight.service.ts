@@ -17,6 +17,7 @@ export class FlightService {
   private _hubConnection: HubConnection;
 
   interval;
+  timeInterval = 3;
   connectTimer;
   time: number;
   msgService: MessageService;
@@ -55,7 +56,7 @@ export class FlightService {
         );
       })
       .catch(err => {
-        console.log("Error while establishing connection :(");
+        console.error("Error while establishing connection :(");
 
         this.messageService.alertMsgEmitter(
           "alert-danger",
@@ -74,7 +75,7 @@ export class FlightService {
     let flight = this.getRundomFly();
     this._hubConnection.invoke("SendFlight", flight).catch(function(err) {
       // alert(err.toString());
-      location.reload();
+      //location.reload();
       return console.error(err.toString());
     });
   }

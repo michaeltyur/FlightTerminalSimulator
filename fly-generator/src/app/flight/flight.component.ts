@@ -15,7 +15,9 @@ export class FlightComponent implements OnInit {
   alertMsg:AlertMsg;
   timeInterval:number;
 
-  constructor(private flightService:FlightService,private msgService:MessageService) { 
+  constructor(
+             private flightService:FlightService,
+             private msgService:MessageService) { 
 
     this.timeInterval=3;
     msgService.alertMsg$.subscribe(res=>this.alertMsg=res);
@@ -25,15 +27,21 @@ export class FlightComponent implements OnInit {
   ngOnInit() {
   }
 
-  startFlyGeneration(){     
+  startFlyGeneration(){   
+    this.msgService.clearMsg();
+    this.stopFlyGeneration();  
     this.flightService.flyGeneratorStart();
   }
-  startOnce(){     
+  startOnce(){    
+    this.msgService.clearMsg(); 
+    this.stopFlyGeneration();
     this.flightService.sendFlight();
   }
+
   stopFlyGeneration(){     
     this.flightService.flyGeneratorStop();
   }
+
   setTimer(time:number)
   {
     if(time)
@@ -41,5 +49,12 @@ export class FlightComponent implements OnInit {
       this.flightService.changeTimerInterval(time*1000);
     }
     
+  }
+
+  setTimeInterval(data:number):void{
+    if (this.timeInterval>1) {
+      this.timeInterval= this.timeInterval+data;
+      this.setTimer(this.timeInterval);
+    }
   }
 }

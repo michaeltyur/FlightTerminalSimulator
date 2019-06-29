@@ -8,7 +8,7 @@ export class MessageService {
 
 message$ = new EventEmitter<Flight>();
 alertMsg$=new EventEmitter<AlertMsg>();
-
+clearMsg$=new EventEmitter<boolean>();
   constructor() { }
 
   messageEmitter(flight:Flight){
@@ -17,5 +17,8 @@ alertMsg$=new EventEmitter<AlertMsg>();
   }
   alertMsgEmitter(type:string,content:string){
     this.alertMsg$.emit({type:type,content:content});
+  }
+  clearMsg():void{
+    this.clearMsg$.emit(true);
   }
 }

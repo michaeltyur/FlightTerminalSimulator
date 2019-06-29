@@ -46,7 +46,8 @@ namespace FlightControl.Core
                 .AllowAnyOrigin()
                 .AllowCredentials()
                 .WithOrigins("http://michaelt-001-site1.btempurl.com/")
-                //.WithOrigins("http://localhost:4300")
+                .WithOrigins("http://localhost:4200/")
+                .WithOrigins("http://localhost:4300/")
                 ;
             }));
             services.AddSignalR();

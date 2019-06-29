@@ -1,56 +1,85 @@
 <div class="container">
-    <div class="alert mt-3"  role="alert" *ngIf="alertMsg" [ngClass]="alertMsg.type">
-        {{alertMsg.content}}
-    </div>
-  <div class="row mt-5" >
-    <div class="col-6">
-
-      <div class="card mt-5 ml-5" 
-           style="width: 20rem;height: 18rem;">
+  <div
+    class="alert mt-3"
+    role="alert"
+    *ngIf="alertMsg"
+    [ngClass]="alertMsg.type"
+  >
+    {{ alertMsg.content }}
+  </div>
+  <div class="row mt-5">
+    <div class="col-sm-6">
+      <div class="card mt-5 ml-auto mr-auto" style="width: 20rem;">
         <div class="card-body">
-          <h5 class="card-title">Fly Generator</h5>
-          <p class="card-text">Press start for start generation</p>
-            <div class="input-group pl-1 pr-3 mb-2 timer-input">
-              <input type="number" 
-                     class="form-control" 
-                     placeholder="time" 
-                     aria-label="Time" 
-                     aria-describedby="button-addon2"
-                     min="2"
-                     max="10"
-                     value="timeInterval"
-                     #timeInput>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" 
-                        type="button" 
-                        (click)="setTimer(timeInput.value)"
-                        id="button-addon2">Set Time</button>
+          <h5 class="card-title text-danger">Fly Generator</h5>
+
+         <div class="row" style="margin-top: 12em;">
+            <div class="col text-warning">
+              <h6>set interval</h6> 
             </div>
-          </div>                   
-       <div class="row">
-         <div class="col-4">
-              <button type="button" 
-                  class="btn btn-danger" 
-                  (click)="startFlyGeneration()">Start</button> 
-         </div>
-         
-         <div class="col-4">
-          <button type="button" 
-              class="btn btn-warning startOnceButton" 
-              (click)="startOnce()">Start Once</button> 
-         </div>
-         <div class="col-4">
-           
-           <button type="button" 
-                  class="btn btn-dark" 
-                  (click)="stopFlyGeneration()">Stop</button>
-         </div>
-       </div>                                               
+          </div>
+          
+         <div
+         class="btn-group btn-group-lg w-100" 
+         role="group">
+         <button
+           type="button"
+           class="btn btn-primary w-50"
+           (click)="setTimeInterval(-1)">
+           <i class="fa fa-arrow-circle-down fa-2x"></i>
+         </button>
+         <button disabled type="button" class="btn btn-dark w-25" (click)="startOnce()">
+           {{timeInterval}}
+         </button>
+         <button
+           type="button"
+           class="btn btn-primary w-50"
+           (click)="setTimeInterval(1)"><i class="fa fa-arrow-circle-up fa-2x"></i></button>
+       </div>
+
+       <!-- Buttons -->
+       <div class="row mt-4">
+          <div class="col text-warning text-center">
+            <h6>start</h6> 
+          </div>
+          <div class="col text-warning text-center">
+              <h6>start once</h6> 
+            </div>
+            <div class="col text-warning text-center">
+                <h6>stop</h6> 
+              </div>
+        </div>
+
+        <!-- Button Div -->
+          <div
+            class="btn-group btn-group-lg ml-auto mr-auto w-100"
+            role="group"
+            aria-label="Basic example">
+            <button
+              type="button"
+              class="btn btn-success"
+              style="width: 33.33%;"
+              (click)="startFlyGeneration()"><i class="fa fa-play-circle fa-2x"></i></button>
+
+            <button type="button" 
+                    class="btn btn-warning text-center" 
+                    (click)="startOnce()"
+                    style="width: 33.33%;">
+                    <i class="fa fa-play-circle fa-2x"></i>
+                  </button>
+
+            <button
+              type="button"
+              class="btn btn-danger"
+              style="width: 33.33%;"
+              (click)="stopFlyGeneration()"><i class="fa fa-stop-circle fa-2x"></i></button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-6">
-      <app-message class="message-block"></app-message>
+
+    <div class="col-sm-6">
+      <app-message class="message-block ml-auto mr-auto"></app-message>
     </div>
   </div>
 </div>

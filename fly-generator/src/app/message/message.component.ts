@@ -21,7 +21,13 @@ export class MessageComponent implements OnInit {
            this.flights.shift();
         this.flights.push(res);
       });
+
+      this.messageService.clearMsg$.subscribe(res=>
+        {
+          if(res)
+          this.flights=[];
+        });
   }
- 
+
 
 }
