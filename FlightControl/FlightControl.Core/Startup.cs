@@ -45,10 +45,11 @@ namespace FlightControl.Core
                 .AllowAnyHeader()
                 //.AllowAnyOrigin()
                 .AllowCredentials()
-                .WithOrigins("http://michaelt-001-site1.btempurl.com/")
-                .WithOrigins("https://flight-terminal-receiver.firebaseapp.com/")
-                .WithOrigins("http://localhost:4200/")
-                .WithOrigins("http://localhost:4300/")
+                .WithOrigins("https://flight-terminal-receiver.firebaseapp.com")
+                .WithOrigins("http://michaelt-001-site1.btempurl.com")
+                .WithOrigins("http://localhost:4200")
+                .WithOrigins("http://localhost:4300")
+                .WithOrigins("http://terminal.somee.com")
                 ;
             }));
             services.AddSignalR(hubOptions =>
