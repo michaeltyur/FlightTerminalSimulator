@@ -13,11 +13,15 @@ export class TerminalService {
   terminalEmitter$ = new EventEmitter();
   selectedFlight$ = new EventEmitter<Flight>();
 
+  //currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  currentUrl="http://localhost:12345/terminal";
+
   connectionStatus$= new EventEmitter();;
 
   constructor() {
+
     this._hubConnection = new HubConnectionBuilder()
-      .withUrl("http://michaelt-001-site1.btempurl.com/terminal")
+      .withUrl(this.currentUrl)
       .build();
     this._hubConnection
       .start()

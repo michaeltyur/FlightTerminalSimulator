@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "ng serve --port 4300",
     "build:prod": "npm run build --prod -vc -cc --aot --buildOptimizer",
     "build": "ng build",
     "test": "ng test",

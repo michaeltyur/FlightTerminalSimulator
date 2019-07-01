@@ -24,15 +24,15 @@ export class FlightService {
   connectionStatus$=new EventEmitter();
 
   flightControlUrl: string = "/api/flight";
-  remoteUrl = "http://michaelt-001-site1.btempurl.com/terminal";
-  localUrl = "http://localhost:12345/terminal";
-  currentUrl;
+ // currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  currentUrl = "http://localhost:12345/terminal";
+
 
   constructor(
     private http: HttpClient,
     private messageService: MessageService
   ) {
-    this.currentUrl = this.remoteUrl;
+
     this.time = 3000;
     this.starthubConnection();
     this._hubConnection.onclose(err => {
@@ -42,7 +42,7 @@ export class FlightService {
   }
   starthubConnection() {
     this._hubConnection = new HubConnectionBuilder()
-      .withUrl(this.remoteUrl)
+      .withUrl(this.currentUrl)
       .build();
     this._hubConnection
       .start()

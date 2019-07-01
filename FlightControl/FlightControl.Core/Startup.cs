@@ -26,6 +26,8 @@ namespace FlightControl.Core
             Configuration = configuration;
         }
 
+        readonly string CorsPolicy = "CorsPolicy";
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -39,17 +41,17 @@ namespace FlightControl.Core
             services.AddSingleton<ITerminalContext, TerminalContext>();//Add Flight manager as singelton
             services.AddSingleton<ITerminalEmitter, TerminalEmitter>();
 
-            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
+            services.AddCors(o => o.AddPolicy(CorsPolicy, builder => {
                 builder
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                //.AllowAnyOrigin()
-                .AllowCredentials()
                 .WithOrigins("https://flight-terminal-receiver.firebaseapp.com")
                 .WithOrigins("http://michaelt-001-site1.btempurl.com")
-                .WithOrigins("http://localhost:4200")
                 .WithOrigins("http://localhost:4300")
+                .WithOrigins("http://localhost:4200")
                 .WithOrigins("http://terminal.somee.com")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+               // .AllowAnyOrigin()
                 ;
             }));
             services.AddSignalR(hubOptions =>
@@ -99,7 +101,8 @@ namespace FlightControl.Core
 
             app.UseHttpsRedirection();
 
-            app.UseCors("CorsPolicy");
+            app.UseCors(CorsPolicy);
+
             app.UseSignalR(routes =>
             {
                 routes.MapHub<TerminalHub>("/terminal");

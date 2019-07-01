@@ -121,10 +121,10 @@ namespace DAL.BL
                 var flightOut = await _flightProcess.AddFlight(flight);
                 RemoveGoOutFlight(flightOut);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
             
         }

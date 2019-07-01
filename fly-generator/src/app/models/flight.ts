@@ -1,5 +1,5 @@
 export class Flight {
-    id:any;
+    id:string;
     nameOfСhiefPilot :string;
     from :string;
     speed :number;

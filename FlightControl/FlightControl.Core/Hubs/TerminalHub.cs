@@ -29,7 +29,7 @@ namespace FlightControl.Core.Hubs
             _terminalEmitter = terminalEmitter;
         }
 
-        public void SendFlight(Flight flight)
+        public void SendFlight(dynamic flight)
         {
             var result = true;
             if (flight != null)
