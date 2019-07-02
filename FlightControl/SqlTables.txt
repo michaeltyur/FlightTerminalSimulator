@@ -1,5 +1,5 @@
 CREATE TABLE Flights(
-    Id uniqueidentifier,
+    Id UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
     Created datetime2(7),
     Modified datetime2(7),
     NameOf—hiefPilot varchar(MAX),
@@ -13,9 +13,9 @@ CREATE TABLE Flights(
 );
 
 CREATE TABLE LogMsgs(
-    Id uniqueidentifier,
+    Id UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
     Created datetime2(7) null,
     Modified datetime2(7) null,
     Message varchar(MAX),
-    FlightId varchar(MAX) 
+    FlightId UNIQUEIDENTIFIER
 );

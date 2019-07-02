@@ -208,7 +208,7 @@ module.exports = ".card{\r\n    background-image: url('imageSmall.jpg');\r\n    
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n\r\n<div class=\"container h-100\">\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col\">\r\n      <h5 *ngIf=\"alertMsg\" class=\"connection-info text-right mt-3 mb-0 pb-0\"><span class=\"badge badge-pill p-2\" \r\n      [class.badge-success]=\"alertMsg.connectionStatus==='success'\"\r\n      [class.badge-danger]=\"alertMsg.connectionStatus==='danger'\"\r\n      [class.badge-warning]=\"alertMsg.connectionStatus==='warning'\">{{alertMsg.content}}</span></h5>\r\n    </div>\r\n\r\n    <div class=\"col\">\r\n        <h5  class=\"text-left  mt-3 mb-0 pb-0\" style=\"cursor: pointer;\">\r\n          <span class=\"badge badge-info badge-pill p-2\" >\r\n            <a class=\"text-white\"\r\n            href=\"http://terminal.somee.com\" \r\n            role=\"button\"\r\n            target=\"_blank\">Open Terminal Site</a></span>\r\n        </h5>\r\n      </div>\r\n  </div>\r\n     \r\n\r\n  <!-- <div\r\n    class=\"alert mt-3\"\r\n    role=\"alert\"\r\n    *ngIf=\"alertMsg\"\r\n    [ngClass]=\"alertMsg.type\">{{ alertMsg.content }}</div> -->\r\n\r\n  <div class=\"row h-100\">\r\n    <!-- Card -->\r\n    <div class=\"col-sm-6 d-flex align-items-center\">\r\n      <div class=\"card ml-auto mr-auto\" style=\"width: 20rem;\">\r\n        <div class=\"card-body\">\r\n          <h5 class=\"card-title text-danger\">Fly Generator</h5>\r\n\r\n           <!-- Flight Info -->\r\n           <div style=\"height: 14em;\">\r\n                <div *ngIf=\"flight\" class=\"alert alert-primary flight-info mt-0 mb-0 d-sm-none d-block\" role=\"alert\" rundomBackGround>\r\n              <h6 class=\"card-subtitle\"><p class=\"mb-0\">flight humber:</p> \r\n                                             <p>{{flight.id}}</p> </h6>\r\n              <hr class=\"mt-0 mb-0\">\r\n              <p class=\"m-0\">from: {{flight.from}}</p>\r\n              <p class=\"m-0\">number of passagers: {{flight.numberOfPass}}</p>\r\n              <p class=\"m-0\">speed: {{flight.speed}}</p>\r\n              <p class=\"m-0\">distance to terminal: {{flight.distanceToTerminal}}</p>\r\n              <p class=\"m-0\">fuel: {{flight.fuel}}</p>\r\n           </div>\r\n           </div>\r\n        \r\n\r\n          <!-- Interval -->\r\n         <div class=\"row\" >\r\n            <div class=\"col text-dark\">\r\n              <h6>set interval</h6> \r\n            </div>\r\n          </div>\r\n          \r\n         <div\r\n         class=\"btn-group btn-group-lg w-100\" \r\n         role=\"group\">\r\n         <button\r\n           type=\"button\"\r\n           class=\"btn btn-primary w-50\"\r\n           (click)=\"setTimeInterval(-1)\">\r\n           <i class=\"fa fa-arrow-circle-down fa-2x\"></i>\r\n         </button>\r\n         <button disabled type=\"button\" class=\"btn btn-dark w-25\" (click)=\"startOnce()\">\r\n           {{timeInterval}}\r\n         </button>\r\n         <button\r\n           type=\"button\"\r\n           class=\"btn btn-primary w-50\"\r\n           (click)=\"setTimeInterval(1)\"><i class=\"fa fa-arrow-circle-up fa-2x\"></i></button>\r\n       </div>\r\n\r\n       <!-- Buttons -->\r\n       <div class=\"row mt-4\">\r\n          <div class=\"col text-dark text-center\">\r\n            <h6>start</h6> \r\n          </div>\r\n          <div class=\"col text-dark text-center\">\r\n              <h6>start once</h6> \r\n            </div>\r\n            <div class=\"col text-dark text-center\">\r\n                <h6>stop</h6> \r\n              </div>\r\n        </div>\r\n\r\n        <!-- Button Div -->\r\n          <div\r\n            class=\"btn-group btn-group-lg ml-auto mr-auto w-100\"\r\n            role=\"group\"\r\n            aria-label=\"Basic example\">\r\n            <button\r\n              type=\"button\"\r\n              class=\"btn btn-success\"\r\n              style=\"width: 33.33%;\"\r\n              (click)=\"startFlyGeneration()\"><i class=\"fa fa-play-circle fa-2x\"></i></button>\r\n\r\n            <button type=\"button\" \r\n                    class=\"btn btn-warning text-center\" \r\n                    (click)=\"startOnce()\"\r\n                    style=\"width: 33.33%;\">\r\n                    <i class=\"fa fa-play-circle fa-2x\"></i>\r\n                  </button>\r\n\r\n            <button\r\n              type=\"button\"\r\n              class=\"btn btn-danger\"\r\n              style=\"width: 33.33%;\"\r\n              (click)=\"stopFlyGeneration()\"><i class=\"fa fa-stop-circle fa-2x\"></i></button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-sm-6 d-flex justify-content-center\">\r\n      <app-message class=\"message-block d-none d-sm-block\"></app-message>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "\r\n\r\n<div class=\"container h-100\">\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-12 col-sm-6\">\r\n      <h5 *ngIf=\"alertMsg\" class=\"connection-info text-center mt-3 mb-0 pb-0\"><span class=\"badge badge-pill p-2\" \r\n      [class.badge-success]=\"alertMsg.connectionStatus==='success'\"\r\n      [class.badge-danger]=\"alertMsg.connectionStatus==='danger'\"\r\n      [class.badge-warning]=\"alertMsg.connectionStatus==='warning'\">{{alertMsg.content}}</span></h5>\r\n    </div>\r\n\r\n    <div class=\"col-12 col-sm-6\">\r\n        <h5  class=\"text-center mt-3 mb-0 pb-0\" style=\"cursor: pointer;\">\r\n          <span class=\"badge badge-info badge-pill p-2\" >\r\n            <a class=\"text-white\"\r\n            href=\"http://terminal.somee.com\" \r\n            role=\"button\"\r\n            target=\"_blank\">Open Terminal Site</a></span>\r\n        </h5>\r\n      </div>\r\n  </div>\r\n     \r\n\r\n  <!-- <div\r\n    class=\"alert mt-3\"\r\n    role=\"alert\"\r\n    *ngIf=\"alertMsg\"\r\n    [ngClass]=\"alertMsg.type\">{{ alertMsg.content }}</div> -->\r\n\r\n  <div class=\"row h-100\">\r\n    <!-- Card -->\r\n    <div class=\"col-sm-6 d-flex align-items-center\">\r\n      <div class=\"card ml-auto mr-auto\" style=\"width: 20rem;\">\r\n        <div class=\"card-body\">\r\n          <h5 class=\"card-title text-danger\">Fly Generator</h5>\r\n\r\n           <!-- Flight Info -->\r\n           <div style=\"height: 14em;\">\r\n                <div *ngIf=\"flight\" class=\"alert alert-primary flight-info mt-0 mb-0 d-sm-none d-block\" role=\"alert\" rundomBackGround>\r\n              <h6 class=\"card-subtitle\"><p class=\"mb-0\">flight humber:</p> \r\n                                             <p>{{flight.id}}</p> </h6>\r\n              <hr class=\"mt-0 mb-0\">\r\n              <p class=\"m-0\">from: {{flight.from}}</p>\r\n              <p class=\"m-0\">number of passagers: {{flight.numberOfPass}}</p>\r\n              <p class=\"m-0\">speed: {{flight.speed}}</p>\r\n              <p class=\"m-0\">distance to terminal: {{flight.distanceToTerminal}}</p>\r\n              <p class=\"m-0\">fuel: {{flight.fuel}}</p>\r\n           </div>\r\n           </div>\r\n        \r\n\r\n          <!-- Interval -->\r\n         <div class=\"row\" >\r\n            <div class=\"col text-dark\">\r\n              <h6>set interval</h6> \r\n            </div>\r\n          </div>\r\n          \r\n         <div\r\n         class=\"btn-group btn-group-lg w-100\" \r\n         role=\"group\">\r\n         <button\r\n           type=\"button\"\r\n           class=\"btn btn-primary w-50\"\r\n           (click)=\"setTimeInterval(-1)\">\r\n           <i class=\"fa fa-arrow-circle-down fa-2x\"></i>\r\n         </button>\r\n         <button disabled type=\"button\" class=\"btn btn-dark w-25\" (click)=\"startOnce()\">\r\n           {{timeInterval}}\r\n         </button>\r\n         <button\r\n           type=\"button\"\r\n           class=\"btn btn-primary w-50\"\r\n           (click)=\"setTimeInterval(1)\"><i class=\"fa fa-arrow-circle-up fa-2x\"></i></button>\r\n       </div>\r\n\r\n       <!-- Buttons -->\r\n       <div class=\"row mt-4\">\r\n          <div class=\"col text-dark text-center\">\r\n            <h6>start</h6> \r\n          </div>\r\n          <div class=\"col text-dark text-center\">\r\n              <h6>start once</h6> \r\n            </div>\r\n            <div class=\"col text-dark text-center\">\r\n                <h6>stop</h6> \r\n              </div>\r\n        </div>\r\n\r\n        <!-- Button Div -->\r\n          <div\r\n            class=\"btn-group btn-group-lg ml-auto mr-auto w-100\"\r\n            role=\"group\"\r\n            aria-label=\"Basic example\">\r\n            <button\r\n              type=\"button\"\r\n              class=\"btn btn-success\"\r\n              style=\"width: 33.33%;\"\r\n              (click)=\"startFlyGeneration()\"><i class=\"fa fa-play-circle fa-2x\"></i></button>\r\n\r\n            <button type=\"button\" \r\n                    class=\"btn btn-warning text-center\" \r\n                    (click)=\"startOnce()\"\r\n                    style=\"width: 33.33%;\">\r\n                    <i class=\"fa fa-play-circle fa-2x\"></i>\r\n                  </button>\r\n\r\n            <button\r\n              type=\"button\"\r\n              class=\"btn btn-danger\"\r\n              style=\"width: 33.33%;\"\r\n              (click)=\"stopFlyGeneration()\"><i class=\"fa fa-stop-circle fa-2x\"></i></button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-sm-6 d-flex justify-content-center\">\r\n      <app-message class=\"message-block d-none d-sm-block\"></app-message>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -495,6 +495,7 @@ var httpOptions = {
     headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({ "Content-Type": "application/json" })
 };
 var FlightService = /** @class */ (function () {
+    //currentUrl = "http://localhost:12345/terminal";
     function FlightService(http, messageService) {
         var _this = this;
         this.http = http;
@@ -502,9 +503,7 @@ var FlightService = /** @class */ (function () {
         this.timeInterval = 3;
         this.connectionStatus$ = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
         this.flightControlUrl = "/api/flight";
-        this.remoteUrl = "http://michaelt-001-site1.btempurl.com/terminal";
-        this.localUrl = "http://localhost:12345/terminal";
-        this.currentUrl = this.remoteUrl;
+        this.currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
         this.time = 3000;
         this.starthubConnection();
         this._hubConnection.onclose(function (err) {
@@ -515,7 +514,7 @@ var FlightService = /** @class */ (function () {
     FlightService.prototype.starthubConnection = function () {
         var _this = this;
         this._hubConnection = new _aspnet_signalr__WEBPACK_IMPORTED_MODULE_3__["HubConnectionBuilder"]()
-            .withUrl(this.remoteUrl)
+            .withUrl(this.currentUrl)
             .build();
         this._hubConnection
             .start()
@@ -537,10 +536,11 @@ var FlightService = /** @class */ (function () {
     };
     //WebSocket/SignalR
     FlightService.prototype.sendFlight = function () {
+        var _this = this;
         var flight = this.getRundomFly();
         this._hubConnection.invoke("SendFlight", flight).catch(function (err) {
-            // alert(err.toString());
-            //location.reload();
+            _this.flyGeneratorStop();
+            _this.connectionStatus$.emit(false);
             return console.error(err.toString());
         });
     };
@@ -560,11 +560,12 @@ var FlightService = /** @class */ (function () {
     FlightService.prototype.changeTimerInterval = function (time) {
         this.flyGeneratorStop();
         this.time = time;
-        this.flyGeneratorStart();
+        // this.flyGeneratorStart();
     };
     FlightService.prototype.flyGeneratorStop = function () {
         if (this.interval) {
             clearInterval(this.interval);
+            this.messageService.clearMsg();
         }
     };
     FlightService.prototype.randomNumber = function (min, max) {

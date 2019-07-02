@@ -33,9 +33,11 @@ namespace FlightControl.Core.Hubs
         {
             if (flight != null)
             {
+                //Guid tmp;
+                //var id = Guid.TryParse((string)flight.id,out tmp);
+
                 Flight localFlight = new Flight
                 {
-                    Id = Guid.Parse(flight.id),
                     NameOfСhiefPilot = flight.nameOfСhiefPilot,
                     From = flight.from,
                     Speed = flight.speed,

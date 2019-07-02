@@ -8,7 +8,7 @@ namespace FlightTerminalDb.Interfaces
     public interface ITerminalRepository
     {
         bool AddFlight(Flight flight);
-        bool DeleteFlight(string id);
+        bool DeleteFlight(Guid id);
         ICollection<Flight> GetAllFlights();
     }
 }

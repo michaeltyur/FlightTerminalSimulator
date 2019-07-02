@@ -13,8 +13,8 @@ export class TerminalService {
   terminalEmitter$ = new EventEmitter();
   selectedFlight$ = new EventEmitter<Flight>();
 
-  //currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
-  currentUrl="http://localhost:12345/terminal";
+  currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  //currentUrl="http://localhost:12345/terminal";
 
   connectionStatus$= new EventEmitter();;
 

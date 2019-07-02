@@ -25,12 +25,12 @@ namespace FlightTerminalDb.Repositories
             {
                 try
                 {
-                        log.Id = Guid.NewGuid();
-                        log.Created = DateTime.Now;
-                        log.Modified = null;
-                        _terminalContextDb.Add(log);
-                        _terminalContextDb.SaveChanges();
-                        return true;
+                    log.Id = Guid.NewGuid();
+                    log.Created = DateTime.Now;
+                    log.Modified = null;
+                    _terminalContextDb.Add(log);
+                    _terminalContextDb.SaveChanges();
+                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -72,25 +72,16 @@ namespace FlightTerminalDb.Repositories
         {
             lock (_writeReadLock)
             {
-                if (id!=null)
+                if (id != null)
                 {
-                    try
+                    var log = _terminalContextDb.LogMsgs.FirstOrDefault(l => l.Id == id);
+                    if (log != null)
                     {
-                        var log = _terminalContextDb.LogMsgs.FirstOrDefault(l => l.Id == id);
-                        if (log != null)
-                        {
-                            _terminalContextDb.Remove(log);
-                            _terminalContextDb.SaveChanges();
-                            return true;
-                        }
-                        return false;
+                        _terminalContextDb.Remove(log);
+                        _terminalContextDb.SaveChanges();
+                        return true;
                     }
-                    catch (Exception ex)
-                    {
-
-                        throw ex;
-                    }
-
+                    return false;
                 }
                 return false;
             }
@@ -101,15 +92,8 @@ namespace FlightTerminalDb.Repositories
         {
             lock (_writeReadLock)
             {
-                try
-                {
-                    return _terminalContextDb.LogMsgs.ToList();
-                }
-                catch (Exception ex)
-                {
+                return _terminalContextDb.LogMsgs.ToList();
 
-                    throw ex;
-                }
             }
 
         }
@@ -125,27 +109,20 @@ namespace FlightTerminalDb.Repositories
             {
                 if (log != null)
                 {
-                    try
-                    {
-                        var oldLog = _terminalContextDb.LogMsgs.FirstOrDefault(l => l.Id == log.Id);
-                        if (log != null)
-                        {
-                            oldLog.Created = log.Created;
-                            oldLog.Flight = log.Flight;
-                            oldLog.FlightId = log.FlightId;
-                            oldLog.Message = log.Message;
-                            oldLog.Modified = DateTime.Now;
 
-                            _terminalContextDb.SaveChanges();
-                            return true;
-                        }
-                        return false;
-                    }
-                    catch (Exception ex)
+                    var oldLog = _terminalContextDb.LogMsgs.FirstOrDefault(l => l.Id == log.Id);
+                    if (log != null)
                     {
+                        oldLog.Created = log.Created;
+                        oldLog.Flight = log.Flight;
+                        oldLog.FlightId = log.FlightId;
+                        oldLog.Message = log.Message;
+                        oldLog.Modified = DateTime.Now;
 
-                        throw ex;
+                        _terminalContextDb.SaveChanges();
+                        return true;
                     }
+                    return false;
 
                 }
                 return false;

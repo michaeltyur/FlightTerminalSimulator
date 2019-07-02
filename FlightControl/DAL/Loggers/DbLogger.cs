@@ -39,15 +39,9 @@ namespace DAL.Loggers
         {
             if (flight != null)
             {
-                try
-                {
+             
                     _dbManager.FlightRepository.AddFlight(flight);
                     FlightAddedLog(flight);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
         }
 
@@ -55,15 +49,9 @@ namespace DAL.Loggers
         {
             if (flight != null)
             {
-                try
-                {
+              
                     _dbManager.FlightRepository.DeleteFlight(flight.Id);
                     FlightRemovedLog(flight);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
         }
 
@@ -71,16 +59,10 @@ namespace DAL.Loggers
         {
             if (flight != null)
             {
-                try
-                {
+
                     var message = $"flight from {flight.From} is added to terminal";
                     LogMsg logMsg = GetLogMsg(flight, message);
                     _dbManager.LogMsgRepository.AddLogMsg(logMsg);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
         }
 
@@ -88,16 +70,10 @@ namespace DAL.Loggers
         {
             if (flight != null)
             {
-                try
-                {
+
                     var message = $"flight from {flight.From} is removed";
                     LogMsg logMsg = GetLogMsg(flight, message);
                     _dbManager.LogMsgRepository.AddLogMsg(logMsg);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
         }
 
@@ -105,33 +81,19 @@ namespace DAL.Loggers
         {
             if (flight != null)
             {
-                try
-                {
                     var message = $"flight from {flight.From} has low level of fuel";
                     LogMsg logMsg = GetLogMsg(flight, message);
                     _dbManager.LogMsgRepository.AddLogMsg(logMsg);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
         }
 
         public void TerminalFullLog(Flight flight)
         {
             if (flight != null)
-            {
-                try
-                {
+            { 
                     var message = $"terminal is full,flight from {flight.From} is redirected to another airfield";
                     LogMsg logMsg = GetLogMsg(flight, message);
                     _dbManager.LogMsgRepository.AddLogMsg(logMsg);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
         }
 
@@ -139,16 +101,10 @@ namespace DAL.Loggers
         {
             if (flight != null)
             {
-                try
-                {
+
                     var message = msg;
                     LogMsg logMsg = GetLogMsg(flight, message);
                     _dbManager.LogMsgRepository.AddLogMsg(logMsg);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
         }
 

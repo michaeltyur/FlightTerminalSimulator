@@ -18,36 +18,34 @@ namespace FlightTerminalDb.TerminalRepositories
         public bool AddFlight(Flight flight)
         {
            
-                try
-                {
+                //try
+                //{
                     _terminalContextDb.Add(flight);
                     _terminalContextDb.SaveChanges();
                     return true;
-                }
-                catch (Exception ex)
-                {
+                //}
+                //catch (Exception ex)
+                //{
 
-                    throw ex;
-                }
+                //    throw ex;
+                //}
         
         }
 
-        public bool DeleteFlight(string id)
+        public bool DeleteFlight(Guid id)
         {
-            //if (string.IsNullOrEmpty(id))
-            //{
-            //    using (TerminalContextDb terminalContextDb = _factory.Create())
-            //    {
-            //        var flight = terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == id);
-            //        if (flight != null)
-            //        {
-            //            terminalContextDb.Remove(flight);
-            //            terminalContextDb.SaveChanges();
-            //            return true;
-            //        }
-            //        return false;
-            //    }
-            //}
+            if (Guid.Empty!=id)
+            {
+
+                var flight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Equals(id));
+                if (flight != null)
+                {
+                    _terminalContextDb.Remove(flight);
+                    _terminalContextDb.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
             return false;
         }
 

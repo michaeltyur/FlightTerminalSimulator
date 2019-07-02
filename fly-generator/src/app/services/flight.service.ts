@@ -24,8 +24,8 @@ export class FlightService {
   connectionStatus$=new EventEmitter();
 
   flightControlUrl: string = "/api/flight";
- // currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
-  currentUrl = "http://localhost:12345/terminal";
+  currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  //currentUrl = "http://localhost:12345/terminal";
 
 
   constructor(
@@ -74,9 +74,9 @@ export class FlightService {
   //WebSocket/SignalR
   sendFlight(): void {
     let flight = this.getRundomFly();
-    this._hubConnection.invoke("SendFlight", flight).catch(function(err) {
-      // alert(err.toString());
-      //location.reload();
+    this._hubConnection.invoke("SendFlight", flight).catch((err)=> {
+      this.flyGeneratorStop();
+      this.connectionStatus$.emit(false);
       return console.error(err.toString());
     });
   }
@@ -98,11 +98,12 @@ export class FlightService {
   changeTimerInterval(time: number) {
     this.flyGeneratorStop();
     this.time = time;
-    this.flyGeneratorStart();
+   // this.flyGeneratorStart();
   }
   flyGeneratorStop() {
     if (this.interval) {
       clearInterval(this.interval);
+      this.messageService.clearMsg();
     }
   }
 
