@@ -31,9 +31,25 @@ namespace FlightControl.Core.Hubs
 
         public void SendFlight(dynamic flight)
         {
-            var result = true;
             if (flight != null)
-                result = _terminalContext.AddFlight(flight);
+            {
+                Flight localFlight = new Flight
+                {
+                    Id = Guid.Parse(flight.id),
+                    NameOfСhiefPilot = flight.nameOfСhiefPilot,
+                    From = flight.from,
+                    Speed = flight.speed,
+                    NumberOfPass = flight.numberOfPass,
+                    Fuel = flight.fuel,
+                    Image = flight.image,
+                    DistanceToTerminal = flight.distanceToTerminal
+                };
+                var result = true;
+                if (localFlight != null)
+                    result = _terminalContext.AddFlight(localFlight);
+            }
+
+
         }
     }
 }
