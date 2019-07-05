@@ -8,3 +8,8 @@ body{
     background-repeat:no-repeat;
     background-size: cover;
 }/* You can add global styles to this file, and also import other style files */
+@media only screen and (max-width: 400px) {
+  body{
+    overflow: auto;
+  }
+}

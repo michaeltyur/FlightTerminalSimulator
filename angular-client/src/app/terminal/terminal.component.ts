@@ -41,6 +41,7 @@ export class TerminalComponent implements OnInit {
         this.msgs.shift();
         this.msgs.push(res);
       }
+      else this.msgs.push(res);
 
 
     });
