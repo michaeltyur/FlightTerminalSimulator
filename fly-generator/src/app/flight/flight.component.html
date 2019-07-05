@@ -4,7 +4,7 @@
 
   <div class="row">
     <div class="col-12 col-sm-6">
-      <h5 *ngIf="alertMsg" class="connection-info text-center mt-3 mb-0 pb-0"><span class="badge badge-pill p-2" 
+      <h5 *ngIf="alertMsg" class="connection-info text-center mt-3 mb-0 pb-0"><span class="badge badge-pill p-2"
       [class.badge-success]="alertMsg.connectionStatus==='success'"
       [class.badge-danger]="alertMsg.connectionStatus==='danger'"
       [class.badge-warning]="alertMsg.connectionStatus==='warning'">{{alertMsg.content}}</span></h5>
@@ -12,15 +12,15 @@
 
     <div class="col-12 col-sm-6">
         <h5  class="text-center mt-3 mb-0 pb-0" style="cursor: pointer;">
-          <span class="badge badge-info badge-pill p-2" >
+          <span class="badge badge-info badge-pill p-2 open-site" >
             <a class="text-white"
-            href="http://terminal.somee.com" 
+            [href]="terminalReceiverUrl"
             role="button"
             target="_blank">Open Terminal Site</a></span>
         </h5>
       </div>
   </div>
-     
+
 
   <!-- <div
     class="alert mt-3"
@@ -38,7 +38,7 @@
            <!-- Flight Info -->
            <div style="height: 14em;">
                 <div *ngIf="flight" class="alert alert-primary flight-info mt-0 mb-0 d-sm-none d-block" role="alert" rundomBackGround>
-              <h6 class="card-subtitle"><p class="mb-0">flight humber:</p> 
+              <h6 class="card-subtitle"><p class="mb-0">flight humber:</p>
                                              <p>{{flight.id}}</p> </h6>
               <hr class="mt-0 mb-0">
               <p class="m-0">from: {{flight.from}}</p>
@@ -48,17 +48,17 @@
               <p class="m-0">fuel: {{flight.fuel}}</p>
            </div>
            </div>
-        
+
 
           <!-- Interval -->
          <div class="row" >
             <div class="col text-dark">
-              <h6>set interval</h6> 
+              <h6>set interval</h6>
             </div>
           </div>
-          
+
          <div
-         class="btn-group btn-group-lg w-100" 
+         class="btn-group btn-group-lg w-100"
          role="group">
          <button
            type="button"
@@ -78,13 +78,13 @@
        <!-- Buttons -->
        <div class="row mt-4">
           <div class="col text-dark text-center">
-            <h6>start</h6> 
+            <h6>start</h6>
           </div>
           <div class="col text-dark text-center">
-              <h6>start once</h6> 
+              <h6>start once</h6>
             </div>
             <div class="col text-dark text-center">
-                <h6>stop</h6> 
+                <h6>stop</h6>
               </div>
         </div>
 
@@ -99,8 +99,8 @@
               style="width: 33.33%;"
               (click)="startFlyGeneration()"><i class="fa fa-play-circle fa-2x"></i></button>
 
-            <button type="button" 
-                    class="btn btn-warning text-center" 
+            <button type="button"
+                    class="btn btn-warning text-center"
                     (click)="startOnce()"
                     style="width: 33.33%;">
                     <i class="fa fa-play-circle fa-2x"></i>

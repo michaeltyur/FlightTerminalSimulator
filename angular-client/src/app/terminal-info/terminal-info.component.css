@@ -1,3 +1,11 @@
 /* .terminal-info{
     margin-top:-10% !important;
 } */
+@media only screen and (max-height: 400px) {
+  .info-cart-body {
+    display: none;
+  }
+  .card-body {
+    padding: 0.8rem;
+  }
+}

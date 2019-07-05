@@ -11,59 +11,58 @@ import { MessageService } from '../services/message.service';
 })
 export class FlightComponent implements OnInit {
 
-  newFly:Flight;
-  alertMsg:AlertMsg;
-  timeInterval:number;
+  newFly: Flight;
+  alertMsg: AlertMsg;
+  timeInterval: number;
   flight;
-  connectionStatus:boolean;
+  terminalReceiverUrl: string;
+  connectionStatus: boolean;
 
   constructor(
-             private flightService:FlightService,
-             private msgService:MessageService) { 
+    private flightService: FlightService,
+    private msgService: MessageService) {
 
-    this.timeInterval=3;
-    msgService.alertMsg$.subscribe(res=>{
-      this.alertMsg=res;
+    this.timeInterval = 3;
+    msgService.alertMsg$.subscribe(res => {
+      this.alertMsg = res;
     });
 
   }
 
   ngOnInit() {
-    this.msgService.message$.subscribe(res=>
-      {
-        if(res)
-        this.flight=res;
-      });
+    this.terminalReceiverUrl = this.flightService.terminalReceiverUrl;
+    this.msgService.message$.subscribe(res => {
+      if (res)
+        this.flight = res;
+    });
   }
 
-  startFlyGeneration(){   
+  startFlyGeneration() {
     this.msgService.clearMsg();
-    this.stopFlyGeneration();  
+    this.stopFlyGeneration();
     this.flightService.flyGeneratorStart();
   }
-  startOnce(){    
-    this.msgService.clearMsg(); 
+  startOnce() {
+    this.msgService.clearMsg();
     this.stopFlyGeneration();
     this.flightService.sendFlight();
   }
 
-  stopFlyGeneration(){     
-    this.flight=null;
+  stopFlyGeneration() {
+    this.flight = null;
     this.flightService.flyGeneratorStop();
   }
 
-  setTimer(time:number)
-  {
-    if(time)
-    {
-      this.flightService.changeTimerInterval(time*1000);
+  setTimer(time: number) {
+    if (time) {
+      this.flightService.changeTimerInterval(time * 1000);
     }
-    
+
   }
 
-  setTimeInterval(data:number):void{
-    if (this.timeInterval>1) {
-      this.timeInterval= this.timeInterval+data;
+  setTimeInterval(data: number): void {
+    if (this.timeInterval > 1) {
+      this.timeInterval = this.timeInterval + data;
       this.setTimer(this.timeInterval);
     }
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HubConnection,HubConnectionBuilder } from '@aspnet/signalr';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import { Flight, PlaneTerminalState } from '../models/flight';
 import { TerminalService } from '../services/terminal.service';
@@ -18,31 +18,35 @@ export class TerminalComponent implements OnInit {
   msgs: Message[] = [];
   closeResult: string;
 
-  flights : Flight[];
-  selectedFlight:Flight;
+  flights: Flight[];
+  selectedFlight: Flight;
 
 
-  constructor(private terminalService: TerminalService,private modalService: NgbModal) { 
-    terminalService.selectedFlight$.subscribe(res=>
-      {
-        this.selectedFlight=res
-      });
- 
+  constructor(private terminalService: TerminalService, private modalService: NgbModal) {
+    terminalService.selectedFlight$.subscribe(res => {
+      this.selectedFlight = res
+    });
+
     this.flights = [];
   }
 
   ngOnInit() {
-    this.terminalService.messageEmitter$.subscribe((res:Message)=>
-    {
-      if(this.msgs.length>2)
-         this.msgs.shift();
-      this.msgs.push(res);
+    this.terminalService.messageEmitter$.subscribe((res: Message) => {
+      if (window.innerHeight < 400) {
+        this.msgs = [];
+        this.msgs.push(res);
+
+      }
+      else if (this.msgs.length > 2) {
+        this.msgs.shift();
+        this.msgs.push(res);
+      }
+
 
     });
-    this.terminalService.terminalEmitter$.subscribe((res:Flight[])=>
-      {      
-         this.flights=res;
-     });
+    this.terminalService.terminalEmitter$.subscribe((res: Flight[]) => {
+      this.flights = res;
+    });
   }
   open(content) {
     this.modalService.open(content);

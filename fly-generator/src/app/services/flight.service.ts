@@ -25,6 +25,7 @@ export class FlightService {
 
   flightControlUrl: string = "/api/flight";
   currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  public terminalReceiverUrl="http://michaelt-001-site2.btempurl.com";
   //currentUrl = "http://localhost:12345/terminal";
 
 

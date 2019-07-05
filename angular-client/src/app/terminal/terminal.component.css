@@ -10,9 +10,9 @@
 .list-group{
     margin-top: -5%;
 }
-/* .connection-info{
-    position: absolute;
-    display: block;
-    left: -2.5em;
-    top: 13.5em;
-} */
+@media only screen and (max-height: 400px) {
+
+    .single-plain-info{
+        line-height: 100%;
+    }
+    }

@@ -35,3 +35,9 @@
     animation-duration: 0.7s;
     animation-iteration-count: infinite;
   }
+   /* @media only screen and (max-height: 400px) {
+    .plane img{
+      width: 50%;
+      height: 30%;
+     }
+   } */

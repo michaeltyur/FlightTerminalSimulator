@@ -28,3 +28,8 @@
     left:25px;
   }
  
+  /* @media only screen and (max-height: 400px) {
+    .plane img{
+       transform:scale(0.7) !important;
+     }
+   } */

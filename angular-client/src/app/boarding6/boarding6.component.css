@@ -1,34 +1,47 @@
-.container-fluid{
+.container-fluid {
   height: 100%;
   width: 100%;
-  background-image: url('../../assets/Terminal/boarding.png');
+  background-image: url("../../assets/Terminal/boarding.png");
   background-size: 100% 100%;
-  background-repeat:no-repeat;
-  display: flex!important;
-  flex-direction: row!important;
+  background-repeat: no-repeat;
+  display: flex !important;
+  flex-direction: row !important;
   justify-content: center !important;
 }
-img{
-   -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
+img {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
-.step6-bisembarking-boarding{
-    width: 180px;
-    height: 170px;
-    position: relative;
-    top:20%;
-    animation-name: ann-step6-bisembarking-boarding;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-  }
+.step6-bisembarking-boarding {
+  width: 180px;
+  height: 170px;
+  position: relative;
+  top: 20%;
+  animation-name: ann-step6-bisembarking-boarding;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
 
-  @keyframes ann-step6-bisembarking-boarding {
-    0%   {transform: rotate(3deg);}
-    50%  {transform: rotate(-3deg);}
-    100%{transform: rotate(3deg);}
+@keyframes ann-step6-bisembarking-boarding {
+  0% {
+    transform: rotate(3deg);
   }
+  50% {
+    transform: rotate(-3deg);
+  }
+  100% {
+    transform: rotate(3deg);
+  }
+}
 
-  .position-absolute{
-    left: 25px;
+.position-absolute {
+  left: 25px;
+}
+
+/* @media only screen and (max-height: 400px) {
+ .plane img {
+    -webkit-transform: scaleX(-0.7) !important;
+    transform: scaleX(-0.7) !important;
   }
+ } */

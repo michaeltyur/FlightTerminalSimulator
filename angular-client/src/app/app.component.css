@@ -1,4 +1,13 @@
-
+#cover-addver{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(../assets/broken-plane.jpg);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
   
   /* steps */
  

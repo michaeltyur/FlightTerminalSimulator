@@ -45,9 +45,9 @@ namespace FlightControl.Core
                 builder
                 .WithOrigins("https://flight-terminal-receiver.firebaseapp.com")
                 .WithOrigins("http://michaelt-001-site1.btempurl.com")
-                .WithOrigins("http://localhost:4300")
-                .WithOrigins("http://localhost:4200")
-                .WithOrigins("http://terminal.somee.com")
+               // .WithOrigins("http://localhost:4300")
+               // .WithOrigins("http://localhost:4200")
+                .WithOrigins("http://michaelt-001-site2.btempurl.com")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
