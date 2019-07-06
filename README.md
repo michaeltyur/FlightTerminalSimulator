@@ -1,10 +1,15 @@
 # FlightTerminalSimulator
-**Asp.net core, signalR based project + angular clients**<br /><br />
+**Asp.net core, signalR based project + angular clients + adaptive mobile design**<br /><br />
 **Live server link:  http://michaelt-001-site1.btempurl.com**<br />
-**Terminal client:  http://http://terminal.somee.com/**<br />
 
+**--Desktop**
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/fly_generator.PNG)
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/terminal.PNG)<br />
+**--Mobile**
+![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/ganerator-mobile.PNG)
+![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/terminal-mobile1.PNG)<br />
+![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/terminal-mobile2.PNG)<br />
+
 The purpose of the application: airport simulation.
 1)	Clients :
     a) Flights generator (client) – ui for outgoing flights, based on angular
