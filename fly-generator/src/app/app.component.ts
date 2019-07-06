@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   constructor(){
-    screen.orientation.lock("portrait");
+    //screen.orientation.lock("portrait");
   }
 }

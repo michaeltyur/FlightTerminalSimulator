@@ -7,5 +7,5 @@ export class Flight {
     fuel :number;
     image:string;
     distanceToTerminal:number;
-    senderId:string;
+    senderIp:string;
 }

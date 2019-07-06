@@ -33,10 +33,8 @@ export class FlightComponent implements OnInit {
 
   ngOnInit() {
 
-    // this.flightService.connectionId$.subscribe(res=>{
-    //   this.terminalReceiverUrl+=res;
-    // },error=>console.error(error));
     this.terminalReceiverUrl=this.flightService.terminalReceiverUrl;
+
     this.msgService.message$.subscribe(res => {
       if (res)
         this.flight = res;
