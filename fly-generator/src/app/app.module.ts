@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { FlightComponent } from './flight/flight.component';
 import { MessageComponent } from './message/message.component';
 import { MsgBgDirectiv } from './directives/msg.bg.directiv';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -14,12 +15,13 @@ import { MsgBgDirectiv } from './directives/msg.bg.directiv';
     FlightComponent,
     MessageComponent,
     MsgBgDirectiv
-    
+
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot([]),
   ],
   providers: [],
   bootstrap: [AppComponent]

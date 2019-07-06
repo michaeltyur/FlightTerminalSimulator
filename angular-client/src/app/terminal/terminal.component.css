@@ -1,18 +1,43 @@
+.container-fluid {
+  height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.row {
+  height: 33% !important;
+}
+.list-group {
+  margin-top: -5%;
+}
 
-.container-fluid{
-    height: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-.row{
-    height: 33% !important;
-}
-.list-group{
-    margin-top: -5%;
-}
 @media only screen and (max-height: 400px) {
+  .single-plain-info {
+    line-height: 100%;
+  }
+}
+.flight-info-button {
+  position: absolute;
+  top: 2.3em;
+  left: 0.5em;
+  z-index: 100;
+  border-radius: 50%;
+}
+.terminal-info-button {
+  position: absolute;
+  top: 2.3em;
+  right: 0.5em;
+  z-index: 100;
+  border-radius: 50%;
+}
 
-    .single-plain-info{
-        line-height: 100%;
-    }
-    }
+@media only screen and (max-width: 400px){
+  .connection-info{
+    position: absolute;
+    top: 0.5em;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 100;
+  }
+}

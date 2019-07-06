@@ -1,10 +1,14 @@
 .alert{
     padding-bottom: 5px !important;
+    line-height: 110%;
     display:inline-block;
     margin: 5px;
     width: 17em;
     margin-right: auto;
     margin-left: auto;
+}
+hr{
+  margin-bottom: 5px;
 }
 .msg-out-fly{
     position: relative;

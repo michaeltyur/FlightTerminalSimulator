@@ -20,14 +20,15 @@ export class FlightService {
   timeInterval = 3;
   connectTimer;
   time: number;
-  msgService: MessageService;
+
   connectionStatus$ = new EventEmitter();
 
   flightControlUrl: string = "/api/flight";
-  //currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
-  public terminalReceiverUrl = "http://michaelt-001-site2.btempurl.com";
-  currentUrl = "http://localhost:12345/terminal";
-
+  currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  //currentUrl = "http://localhost:12345/terminal";
+  terminalReceiverUrl = "http://michaelt-001-site2.btempurl.com";
+  connectionId$ = new EventEmitter();
+  connectionId: string;
 
   constructor(
     private http: HttpClient,
@@ -48,7 +49,12 @@ export class FlightService {
     this._hubConnection
       .start()
       .then(() => {
-        console.log("Connection started!");
+
+        this._hubConnection.on("BroadcastFlight", (flight: Flight) => {
+          this.messageService.flightEmitter(flight);
+          // this.messageEmitter$.emit(message);
+        });
+
         if (this.connectTimer) {
           clearInterval(this.connectTimer);
         }
@@ -91,16 +97,19 @@ export class FlightService {
       this.starthubConnection();
     }, 3000);
   }
+
   flyGeneratorStart() {
     this.interval = setInterval(() => {
       this.sendFlight();
     }, this.time);
   }
+
   changeTimerInterval(time: number) {
     this.flyGeneratorStop();
     this.time = time;
     // this.flyGeneratorStart();
   }
+
   flyGeneratorStop() {
     if (this.interval) {
       clearInterval(this.interval);
@@ -136,8 +145,12 @@ export class FlightService {
       flight.from = CITIES[this.randomNumber(1, CITIES.length)];
     }
 
-    this.messageService.messageEmitter(flight);
+    //this.messageService.messageEmitter(flight);
 
     return flight;
+  }
+
+  getConnectionId(): Promise<any> {
+    return this._hubConnection.invoke("GetConnectionId");
   }
 }

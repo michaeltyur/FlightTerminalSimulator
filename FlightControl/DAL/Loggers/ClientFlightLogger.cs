@@ -1,4 +1,5 @@
-﻿using DAL.Interface;
+﻿using DAL.BL;
+using DAL.Interface;
 using FlightTerminalDb;
 using Models.Models;
 using System;
@@ -10,8 +11,11 @@ namespace DAL.Loggers
     public class ClientFlightLogger: IClientFlightLogger
     {
         public delegate void MessageHandler(Message message);
+        public delegate void FlightHandler(Flight flight);
 
         public event MessageHandler SendMessage;
+
+        public event FlightHandler SendFlight;
 
         public ClientFlightLogger()
         {
@@ -33,11 +37,17 @@ namespace DAL.Loggers
             SendMessage?.Invoke(msg);
         }
 
+        private void SendNewAddedFlightInfoToClient(Flight flight)
+        {
+            SendFlight?.Invoke(flight);
+        }
+
         public void NewFlightAdded(Flight flight)
         {
             var type = "alert-success";
             var content = $"flight from {flight.From} is added to terminal";
             var msg = GetNewMessage(type,content);
+            SendNewAddedFlightInfoToClient(flight);
             SendMessageToClient(msg);
         }
         public void FlightRemoved(Flight flight)

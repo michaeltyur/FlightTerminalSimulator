@@ -1,14 +1,14 @@
-<div class="container-fluid">
+<div class="container-fluid d-none d-sm-inline">
 
   <div class="row">
-      <!-- runway 4 -->
+    <!-- runway 4 -->
     <div class="col-6">
-      <app-runway4></app-runway4>   
+      <app-runway4></app-runway4>
     </div>
-     <!-- step 3 -->
+    <!-- step 3 -->
     <div class="col h-75">
       <app-step3></app-step3>
-  
+
     </div>
     <!-- step 2 -->
     <div class="col h-75">
@@ -16,9 +16,9 @@
     </div>
     <!-- step 1 -->
     <div class="col h-75">
-        <app-step1></app-step1>
-      </div>
-  </div>   
+      <app-step1></app-step1>
+    </div>
+  </div>
 
   <div class="row">
     <!-- parking 5 -->
@@ -31,33 +31,136 @@
     </div>
     <!-- terminal info -->
     <div class="col-4">
-      <app-terminal-info></app-terminal-info>       
+      <app-connection-info></app-connection-info>
+      <app-terminal-info></app-terminal-info>
     </div>
   </div>
 
   <div class="row">
-  <!-- boarding 6 -->
-      <div class="col-4">
-        <app-boarding6></app-boarding6>
+    <!-- boarding 6 -->
+    <div class="col-4">
+      <app-boarding6></app-boarding6>
+    </div>
+    <!-- boarding 7 -->
+    <div class="col-4">
+      <app-boarding7></app-boarding7>
+    </div>
+    <!-- flights info -->
+    <div class="col-4">
+      <div class="d-flex  flex-column justify-content-start">
+        <div class="alert single-plain-info ml-auto mr-auto mb-2" role="alert" style="width: 90%;" *ngFor="let msg of msgs" [ngClass]="msg.type">
+          {{msg.content}}
+        </div>
       </div>
-  <!-- boarding 7 -->
-      <div class="col-4">
-        <app-boarding7></app-boarding7>
-      </div>
-  <!-- flights info -->
-      <div class="col-4">
-          <div class="d-flex  flex-column justify-content-start">             
-              <div class="alert single-plain-info ml-auto mr-auto mb-2" 
-                  role="alert" 
-                  style="width: 90%;" 
-                  *ngFor="let msg of msgs"
-                  [ngClass]="msg.type">
-                  {{msg.content}}
-          </div>
-         </div>
-      </div>
+    </div>
   </div>
 </div>
 
-  
+<div class="container-fluid d-inline d-sm-none">
+  <div class="connection-info">
+    <app-connection-info></app-connection-info>
+  </div>
+
+  <button type="button" class="btn btn-info flight-info-button" (click)="openModal('#flight-info-modal')"><i class="fa fa-envelope fa-2x"></i></button>
+  <button type="button" class="btn btn-warning terminal-info-button" (click)="openModal('#terminal-info-modal')"><i class="fa fa-info-circle fa-2x"></i></button>
+
+  <!-- Step 1 -->
+  <div class="row">
+    <div class="col">
+      <app-step1></app-step1>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="row">
+    <div class="col">
+      <app-step2></app-step2>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="row">
+    <div class="col">
+      <app-step3></app-step3>
+    </div>
+  </div>
+
+  <!-- runway -->
+  <div class="row">
+    <div class="col">
+      <app-runway4></app-runway4>
+    </div>
+  </div>
+
+  <!-- parking left -->
+  <div class="row">
+    <div class="col">
+      <app-parking5></app-parking5>
+    </div>
+  </div>
+
+  <!-- boarding left -->
+  <div class="row">
+    <div class="col">
+      <app-boarding6></app-boarding6>
+    </div>
+  </div>
+
+  <!-- boarding right -->
+  <div class="row">
+    <div class="col">
+      <app-boarding7></app-boarding7>
+    </div>
+  </div>
+
+  <!-- parking right -->
+  <div class="row">
+    <div class="col">
+      <app-parking8></app-parking8>
+    </div>
+  </div>
+
+  <!-- flight info modal -->
+  <div class="modal fade" id="flight-info-modal" tabindex="-1" role="dialog" aria-labelledby="flight-info-modal-Label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="flight-info-modal">Flights Messages</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="d-flex  flex-column justify-content-start">
+                  <div class="alert single-plain-info ml-auto mr-auto mb-2" role="alert" style="width: 90%;" *ngFor="let msg of msgs" [ngClass]="msg.type">
+                    {{msg.content}}
+                  </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-lg btn-block" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- terminal info modal -->
+  <div class="modal fade" id="terminal-info-modal" tabindex="-1" role="dialog" aria-labelledby="terminal-info-modal-Label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <app-terminal-info></app-terminal-info>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-lg btn-block" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
 

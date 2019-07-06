@@ -11,5 +11,7 @@ namespace FlightControl.Core.Interfaces
     {
         Task BroadcastMessage(object message);
         Task BroadcastTerminal(ICollection<Flight> terminal);
+
+        Task BroadcastFlight(Flight flight);
     }
 }

@@ -320,11 +320,14 @@ MIT
 @angular/common
 MIT
 
-@aspnet/signalr
-Apache-2.0
-
 @angular/platform-browser
 MIT
+
+@angular/router
+MIT
+
+@aspnet/signalr
+Apache-2.0
 
 @angular/forms
 MIT

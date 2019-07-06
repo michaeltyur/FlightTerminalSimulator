@@ -1,11 +1,11 @@
 {
   "name": "fly-generator",
   "version": "0.0.0",
-  "start":"ng serve --port 4300",
   "scripts": {
     "ng": "ng",
+    "start": "ng serve --port 4300",
     "build:prod": "npm run build --prod -vc -cc --aot --buildOptimizer",
-    "build": "ng build",
+    "build": "ng build --prod -vc -cc --aot --buildOptimizer",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

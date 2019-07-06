@@ -1,7 +1,8 @@
 html,body{
   width: 100% !important;
   height: 100%!important;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 .container-fluid{
   padding: 0 !important;
@@ -30,3 +31,8 @@ html,body{
 }
 
 
+@media only screen and (max-width: 400px) {
+  html,body{
+    overflow-y: auto;
+  }
+}

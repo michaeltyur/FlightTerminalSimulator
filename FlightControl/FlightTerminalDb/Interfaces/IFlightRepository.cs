@@ -7,7 +7,8 @@ namespace FlightTerminalDb.Interfaces
 {
    public interface IFlightRepository : IDisposable
     {
-        bool AddFlight(Flight flight);
+        Guid AddFlight(Flight flight);
+        Flight GetFlight(Guid id);
         bool Update(Flight flight);
         bool DeleteFlight(Guid id);
         ICollection<Flight> GetAllFlights();

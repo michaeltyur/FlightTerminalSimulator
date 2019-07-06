@@ -24,7 +24,8 @@ namespace DAL.BL
 
         private Random _random;
 
-        public delegate void MessageHandler(Message message);
+        // public delegate void MessageHandler(Message message);
+        // public delegate void FlightHandler(Flight flight);
 
         private ConcurrentList<Flight> _flights;
 
@@ -76,7 +77,8 @@ namespace DAL.BL
                     ThreadPriority threadPriority = ThreadPriority.Lowest;
 
                     _flights.Add(flight);
-                    _dbLogger.AddFlightToDb(flight);
+                    Guid flightid = _dbLogger.AddFlightToDb(flight);
+                    flight.Id = flightid;
 
                     //Messages to client
                     ((ClientFlightLogger)ClientFlightLogger).NewFlightAdded(flight);
@@ -103,70 +105,70 @@ namespace DAL.BL
         }
 
 
-    /// <summary>
-    /// Sends the flight to first step when recived him toback , sends hin to removing from system
-    /// </summary>
-    /// <param name="flight">flight object</param>
-    public async Task AddFlightAsync(Flight flight, ThreadPriority threadPriority)
-    {
-        try
+        /// <summary>
+        /// Sends the flight to first step when recived him toback , sends hin to removing from system
+        /// </summary>
+        /// <param name="flight">flight object</param>
+        public async Task AddFlightAsync(Flight flight, ThreadPriority threadPriority)
         {
-            Thread.CurrentThread.Priority = threadPriority;
-            var flightOut = await _flightProcess.AddFlight(flight);
-            RemoveGoOutFlight(flightOut);
-        }
-        catch (Exception ex)
-        {
-
-            throw ex;
-        }
-
-    }
-
-    /// <summary>
-    /// removes flight from collection of flights
-    /// </summary>
-    /// <param name="flight">flight object</param>
-    private void RemoveGoOutFlight(Flight flight)
-    {
-        lock (_locker)
-        {
-            Flight _flight = flight;
             try
             {
-                if (flight != null)
+                Thread.CurrentThread.Priority = threadPriority;
+                var flightOut = await _flightProcess.AddFlight(flight);
+                RemoveGoOutFlight(flightOut);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        /// <summary>
+        /// removes flight from collection of flights
+        /// </summary>
+        /// <param name="flight">flight object</param>
+        private void RemoveGoOutFlight(Flight flight)
+        {
+            lock (_locker)
+            {
+                Flight _flight = flight;
+                try
                 {
-                    _flights.Remove(_flight);
-                    _dbLogger.FlightRemovedLog(flight);
-                    ((ClientFlightLogger)ClientFlightLogger).FlightRemoved(flight);
+                    if (flight != null)
+                    {
+                        _flights.Remove(_flight);
+                        _dbLogger.FlightRemovedLog(flight);
+                        ((ClientFlightLogger)ClientFlightLogger).FlightRemoved(flight);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
-    }
 
-    /// <summary>
-    /// Returns Flights collection
-    /// </summary>
-    /// <returns></returns>
-    public ICollection<Flight> GetTerminalState()
-    {
-        lock (_locker)
+        /// <summary>
+        /// Returns Flights collection
+        /// </summary>
+        /// <returns></returns>
+        public ICollection<Flight> GetTerminalState()
         {
-            try
+            lock (_locker)
             {
-                Flight[] list = new Flight[_flights.Count];
-                _flights.CopyTo(list, 0);
-                return list;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                try
+                {
+                    Flight[] list = new Flight[_flights.Count];
+                    _flights.CopyTo(list, 0);
+                    return list;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
     }
-}
 }

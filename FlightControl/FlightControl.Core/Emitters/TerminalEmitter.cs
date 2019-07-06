@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Models.Models;
 
 namespace FlightControl.Core.Emitters
 {
@@ -25,6 +26,7 @@ namespace FlightControl.Core.Emitters
             _hubContext = hubContext;
             _terminalContext = terminalContext;
             _terminalContext.ClientFlightLogger.SendMessage += SendMessage;
+            _terminalContext.ClientFlightLogger.SendFlight += SendFlightInfo;
 
             _timer = new Timer(SendTerminalState, null, TimeSpan.Zero,
             TimeSpan.FromMilliseconds(ServerGlobals.EMITTER_TIMER_INTERVAL_MILSEC));
@@ -34,10 +36,19 @@ namespace FlightControl.Core.Emitters
         {
             var planeArrey = _terminalContext.GetTerminalState();
             _hubContext.Clients.All.BroadcastTerminal(planeArrey);
+           // _hubContext.Clients.Client("fff").BroadcastTerminal(planeArrey);
+            
         }
         public void SendMessage(object message)
         {
             _hubContext.Clients.All.BroadcastMessage(message);
+           // _hubContext.Clients.Client("fff").BroadcastMessage(message);
+        }
+
+        public void SendFlightInfo(Flight flight)
+        {
+            _hubContext.Clients.All.BroadcastFlight(flight);
+            // _hubContext.Clients.Client("fff").BroadcastMessage(message);
         }
     }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Flight } from '../models/flight';
 import { FlightService } from '../services/flight.service';
 import { MessageService } from '../services/message.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,12 +16,13 @@ export class FlightComponent implements OnInit {
   alertMsg: AlertMsg;
   timeInterval: number;
   flight;
-  terminalReceiverUrl: string;
+  terminalReceiverUrl: string='http://localhost:4200';
   connectionStatus: boolean;
 
   constructor(
     private flightService: FlightService,
-    private msgService: MessageService) {
+    private msgService: MessageService,
+    private router:Router) {
 
     this.timeInterval = 3;
     msgService.alertMsg$.subscribe(res => {
@@ -30,7 +32,11 @@ export class FlightComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.terminalReceiverUrl = this.flightService.terminalReceiverUrl;
+
+    // this.flightService.connectionId$.subscribe(res=>{
+    //   this.terminalReceiverUrl+=res;
+    // },error=>console.error(error));
+    this.terminalReceiverUrl=this.flightService.terminalReceiverUrl;
     this.msgService.message$.subscribe(res => {
       if (res)
         this.flight = res;

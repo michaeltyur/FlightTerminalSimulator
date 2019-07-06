@@ -11,7 +11,7 @@ alertMsg$=new EventEmitter<AlertMsg>();
 clearMsg$=new EventEmitter<boolean>();
   constructor() { }
 
-  messageEmitter(flight:Flight){
+  flightEmitter(flight:Flight){
     if(flight)
       this.message$.emit(flight);
   }

@@ -8,6 +8,7 @@ using FlightTerminalDb;
 using FlightTerminalDb.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,7 @@ namespace FlightControl.Core
 
             services.AddSingleton<ITerminalContext, TerminalContext>();//Add Flight manager as singelton
             services.AddSingleton<ITerminalEmitter, TerminalEmitter>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddCors(o => o.AddPolicy(CorsPolicy, builder => {
                 builder

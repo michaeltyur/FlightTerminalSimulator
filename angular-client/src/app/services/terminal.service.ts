@@ -12,6 +12,7 @@ export class TerminalService {
   messageEmitter$ = new EventEmitter();
   terminalEmitter$ = new EventEmitter();
   selectedFlight$ = new EventEmitter<Flight>();
+  groupName:string;
 
   currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
   //currentUrl="http://localhost:12345/terminal";
@@ -26,8 +27,14 @@ export class TerminalService {
     this._hubConnection
       .start()
       .then(() => {
+
+        //connect to
+        // this.addToGroup(this.groupName).then(res=>{
+        //   console.log(res);
+        // }).catch(err=>console.error(err));
+
         this.connectionStatus$.emit({connectionStatus:true,connectionInfo:"Connection started!"})
-        console.log("Connection started!");
+        //console.log("Connection started!");
       })
       .catch(err => {
         this.connectionStatus$.emit({connectionStatus:false,connectionInfo:"Error while establishing connection :("})
@@ -40,13 +47,20 @@ export class TerminalService {
     this._hubConnection.on("BroadcastMessage", (message: Message) => {
       this.messageEmitter$.emit(message);
     });
+
     this._hubConnection.on("BroadcastTerminal", (flights: Flight[]) => {
       this.terminalEmitter$.emit(flights);
     });
+
   }
+
   sendSelectedFlight(flight: Flight): void {
     if (flight) {
       this.selectedFlight$.emit(flight);
     }
+  }
+
+  addToGroup(groupName:string): Promise<any> {
+    return this._hubConnection.invoke("JoinGroup",groupName);
   }
 }

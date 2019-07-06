@@ -20,24 +20,29 @@ namespace FlightTerminalDb.Repositories
             _terminalContextDb = terminalContextDb;
         }
 
-        public bool AddFlight(Flight flight)
+        public Guid AddFlight(Flight flight)
         {
             lock (_writeReadLock)
             {
-
-                if (_terminalContextDb.Flights.Count() > 100)
+                try
                 {
-                    DeleteMultiply(50);
+                    if (_terminalContextDb.Flights.Count() > 100)
+                    {
+                        DeleteMultiply(50);
+                    }
+
+                    // if (flight.Id == Guid.Empty) flight.Id = Guid.NewGuid();
+                    flight.Created = DateTime.Now;
+                    _terminalContextDb.Add(flight);
+                    _terminalContextDb.SaveChanges();
+
+                    return flight.Id;
                 }
+                catch (Exception ex)
+                {
 
-                // if (flight.Id == Guid.Empty) flight.Id = Guid.NewGuid();
-                flight.Created = DateTime.Now;
-                _terminalContextDb.Add(flight);
-                _terminalContextDb.SaveChanges();
-
-                return true;
-
-
+                    throw ex;
+                }
 
             }
 
@@ -107,13 +112,13 @@ namespace FlightTerminalDb.Repositories
         {
             lock (_writeReadLock)
             {
-                var itemsToDelete = _terminalContextDb.Flights.Take(quantity);
- 
+                var itemsToDelete = _terminalContextDb.Flights.OrderBy(f=>f.Created).Take(quantity);
+
                 foreach (var item in itemsToDelete)
                 {
 
                     var log = _terminalContextDb.LogMsgs.FirstOrDefault(l => l.FlightId.Equals(item.Id));
-                    if (log!=null)
+                    if (log != null)
                     {
                         _terminalContextDb.LogMsgs.Remove(log);
 
@@ -141,6 +146,12 @@ namespace FlightTerminalDb.Repositories
             {
                 return _terminalContextDb.Flights.ToList();
             }
+        }
+
+        public Flight GetFlight(Guid id)
+        {
+            var flight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == id);
+            return flight;
         }
     }
 }

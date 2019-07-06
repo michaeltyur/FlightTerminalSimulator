@@ -9,7 +9,8 @@ CREATE TABLE Flights(
     Fuel int,
     Image varchar(MAX),
     DistanceToTerminal int,
-    PlaneTerminalState int
+    PlaneTerminalState int,
+    SenderIp VARCHAR(50)
 );
 
 CREATE TABLE LogMsgs(

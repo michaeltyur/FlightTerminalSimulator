@@ -11,7 +11,7 @@ namespace DAL.Loggers
     /// </summary>
     public class DbLogger
     {
-    
+
         private DbManager _dbManager;
 
         public DbLogger(DbManager dbManager)
@@ -35,23 +35,25 @@ namespace DAL.Loggers
             else return null;
         }
 
-        public void AddFlightToDb(Flight flight)
+        public Guid AddFlightToDb(Flight flight)
         {
+            Guid id = Guid.Empty;
             if (flight != null)
             {
-             
-                    _dbManager.FlightRepository.AddFlight(flight);
-                    FlightAddedLog(flight);
+
+                id = _dbManager.FlightRepository.AddFlight(flight);
+                FlightAddedLog(flight);
             }
+            return id;
         }
 
         public void RemoveFlightFromDb(Flight flight)
         {
             if (flight != null)
             {
-              
-                    _dbManager.FlightRepository.DeleteFlight(flight.Id);
-                    FlightRemovedLog(flight);
+
+                _dbManager.FlightRepository.DeleteFlight(flight.Id);
+                FlightRemovedLog(flight);
             }
         }
 
@@ -60,9 +62,9 @@ namespace DAL.Loggers
             if (flight != null)
             {
 
-                    var message = $"flight from {flight.From} is added to terminal";
-                    LogMsg logMsg = GetLogMsg(flight, message);
-                    _dbManager.LogMsgRepository.AddLogMsg(logMsg);
+                var message = $"flight from {flight.From} is added to terminal";
+                LogMsg logMsg = GetLogMsg(flight, message);
+                _dbManager.LogMsgRepository.AddLogMsg(logMsg);
             }
         }
 
@@ -71,9 +73,9 @@ namespace DAL.Loggers
             if (flight != null)
             {
 
-                    var message = $"flight from {flight.From} is removed";
-                    LogMsg logMsg = GetLogMsg(flight, message);
-                    _dbManager.LogMsgRepository.AddLogMsg(logMsg);
+                var message = $"flight from {flight.From} is removed";
+                LogMsg logMsg = GetLogMsg(flight, message);
+                _dbManager.LogMsgRepository.AddLogMsg(logMsg);
             }
         }
 
@@ -81,30 +83,30 @@ namespace DAL.Loggers
         {
             if (flight != null)
             {
-                    var message = $"flight from {flight.From} has low level of fuel";
-                    LogMsg logMsg = GetLogMsg(flight, message);
-                    _dbManager.LogMsgRepository.AddLogMsg(logMsg);
+                var message = $"flight from {flight.From} has low level of fuel";
+                LogMsg logMsg = GetLogMsg(flight, message);
+                _dbManager.LogMsgRepository.AddLogMsg(logMsg);
             }
         }
 
         public void TerminalFullLog(Flight flight)
         {
             if (flight != null)
-            { 
-                    var message = $"terminal is full,flight from {flight.From} is redirected to another airfield";
-                    LogMsg logMsg = GetLogMsg(flight, message);
-                    _dbManager.LogMsgRepository.AddLogMsg(logMsg);
+            {
+                var message = $"terminal is full,flight from {flight.From} is redirected to another airfield";
+                LogMsg logMsg = GetLogMsg(flight, message);
+                _dbManager.LogMsgRepository.AddLogMsg(logMsg);
             }
         }
 
-        public void AddLogToDb(Flight flight,string msg)
+        public void AddLogToDb(Flight flight, string msg)
         {
             if (flight != null)
             {
 
-                    var message = msg;
-                    LogMsg logMsg = GetLogMsg(flight, message);
-                    _dbManager.LogMsgRepository.AddLogMsg(logMsg);
+                var message = msg;
+                LogMsg logMsg = GetLogMsg(flight, message);
+                _dbManager.LogMsgRepository.AddLogMsg(logMsg);
             }
         }
 

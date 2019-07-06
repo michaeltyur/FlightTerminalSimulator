@@ -15,10 +15,13 @@ import { Parking8Component } from './parking8/parking8.component';
 import { TerminalInfoComponent } from './terminal-info/terminal-info.component';
 import { ModalContentComponent } from './modal-content/modal-content.component';
 import { PlaneComponent } from './plane/plane.component';
-
+import { RouterModule } from '@angular/router';
+import { ConnectionInfoComponent } from './connection-info/connection-info.component';
+//import { ActivatedRoute } from "@angular/router";
 @NgModule({
   declarations: [
     AppComponent,
+
     TerminalComponent,
     Step1Component,
     Step2Component,
@@ -30,12 +33,14 @@ import { PlaneComponent } from './plane/plane.component';
     Parking8Component,
     TerminalInfoComponent,
     ModalContentComponent,
-    PlaneComponent
+    PlaneComponent,
+    ConnectionInfoComponent
   ],
   entryComponents: [ModalContentComponent],
   imports: [
     BrowserModule,
-    NgbModule
+    NgbModule,
+    RouterModule.forRoot([]),
   ],
   providers: [],
   bootstrap: [AppComponent]

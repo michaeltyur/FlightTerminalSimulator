@@ -4,6 +4,7 @@ using FlightTerminalDb;
 using FlightTerminalDb.Interfaces;
 using FlightTerminalDb.TerminalRepositories;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Models;
@@ -19,23 +20,24 @@ namespace FlightControl.Core.Hubs
         private ITerminalContext _terminalContext;
         private ITerminalEmitter _terminalEmitter;
         private DbManager _dbManager;
+        private IHttpContextAccessor _accessor;
 
         public TerminalHub(ITerminalContext terminalContext,
                            ITerminalEmitter terminalEmitter,
-                           DbManager dbManager)
+                           DbManager dbManager,
+                           IHttpContextAccessor accessor)
         {
             _dbManager = dbManager;
             _terminalContext = terminalContext;
             _terminalEmitter = terminalEmitter;
+            _accessor = accessor;
         }
 
         public void SendFlight(dynamic flight)
         {
             if (flight != null)
             {
-                //Guid tmp;
-                //var id = Guid.TryParse((string)flight.id,out tmp);
-
+                var remoteIpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
                 Flight localFlight = new Flight
                 {
                     NameOfСhiefPilot = flight.nameOfСhiefPilot,
@@ -44,7 +46,8 @@ namespace FlightControl.Core.Hubs
                     NumberOfPass = flight.numberOfPass,
                     Fuel = flight.fuel,
                     Image = flight.image,
-                    DistanceToTerminal = flight.distanceToTerminal
+                    DistanceToTerminal = flight.distanceToTerminal,
+                    SenderIp = remoteIpAddress
                 };
                 var result = true;
                 if (localFlight != null)
@@ -52,6 +55,21 @@ namespace FlightControl.Core.Hubs
             }
 
 
+        }
+
+        public Task JoinGroup(string groupName)
+        {
+            return Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        public Task LeaveGroup(string groupName)
+        {
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        public string GetConnectionId()
+        {
+            return Context.ConnectionId;
         }
     }
 }

@@ -26,6 +26,8 @@ namespace Models.Models
 
         public PlaneTerminalState PlaneTerminalState { get; set; }
 
+        public string SenderIp { get; set; }
+
     }
     public enum PlaneTerminalState
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,5 +10,7 @@ namespace FlightControl.Core.Interfaces
     {
         void SendTerminalState(object sender);//object sender parameter=> for timer
         void SendMessage(object message);
+
+        void SendFlightInfo(Flight flight);
     }
 }

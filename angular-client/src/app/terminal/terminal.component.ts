@@ -4,13 +4,13 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import { Flight, PlaneTerminalState } from '../models/flight';
 import { TerminalService } from '../services/terminal.service';
+declare var $: any;
 @Component({
   selector: 'app-terminal',
   templateUrl: './terminal.component.html',
   styleUrls: ['./terminal.component.css']
 })
 export class TerminalComponent implements OnInit {
-
   private _hubConnection: HubConnection;
   // connectionInfo:string="nnhnn";
   // connectionStatus:boolean;
@@ -51,6 +51,10 @@ export class TerminalComponent implements OnInit {
   }
   open(content) {
     this.modalService.open(content);
+  }
+
+  openModal(modalId:string):void{
+    (<any>$)(modalId).modal('show');
   }
 
 }

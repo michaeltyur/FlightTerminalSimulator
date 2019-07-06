@@ -11,5 +11,6 @@ body{
 @media only screen and (max-width: 400px) {
   body{
     overflow: auto;
+    background-repeat:round;
   }
 }

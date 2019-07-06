@@ -8,5 +8,6 @@ namespace DAL.Interface
     public interface IClientFlightLogger
     {
          event MessageHandler SendMessage;
+         event FlightHandler SendFlight;
     }
 }
