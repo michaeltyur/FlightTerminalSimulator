@@ -1,8 +1,6 @@
 # FlightTerminalSimulator
-**Asp.net core, signalR based project + angular clients**<br /><br />
+**Asp.net core, signalR based project + angular clients + adaptive mobile design**<br /><br />
 **Live server link:  http://michaelt-001-site1.btempurl.com**<br />
-
-**adaptive mobile design**
 
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/fly_generator.PNG)
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/terminal.PNG)<br />
