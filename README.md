@@ -5,7 +5,7 @@
 **--Desktop**
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/fly_generator.PNG)
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/terminal.PNG)<br />
-**--Mobile**
+**--Mobile**<br />
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/ganerator-mobile.PNG)
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/terminal-mobile1.PNG)<br />
 ![alt text](https://github.com/michaeltyur/FlightTerminalSimulator/blob/master/terminal-mobile2.PNG)<br />
