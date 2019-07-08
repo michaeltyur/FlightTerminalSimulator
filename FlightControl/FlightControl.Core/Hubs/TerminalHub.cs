@@ -1,17 +1,15 @@
 ﻿using DAL.Interface;
 using FlightControl.Core.Interfaces;
 using FlightTerminalDb;
-using FlightTerminalDb.Interfaces;
-using FlightTerminalDb.TerminalRepositories;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace FlightControl.Core.Hubs
 {
@@ -21,6 +19,7 @@ namespace FlightControl.Core.Hubs
         private ITerminalEmitter _terminalEmitter;
         private DbManager _dbManager;
         private IHttpContextAccessor _accessor;
+        private readonly string  myIp= "79.176.225.33.test";
 
         public TerminalHub(ITerminalContext terminalContext,
                            ITerminalEmitter terminalEmitter,
@@ -37,7 +36,10 @@ namespace FlightControl.Core.Hubs
         {
             if (flight != null)
             {
-                var remoteIpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                string remoteIpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
+                Task sendMail = Task.Run(() => SendMail(remoteIpAddress));
+
                 Flight localFlight = new Flight
                 {
                     NameOfСhiefPilot = flight.nameOfСhiefPilot,
@@ -70,6 +72,41 @@ namespace FlightControl.Core.Hubs
         public string GetConnectionId()
         {
             return Context.ConnectionId;
+        }
+
+        public void SendMail(string remoteIpAddress)
+        {
+            if (remoteIpAddress==myIp || _dbManager.FlightRepository.ContensIp(remoteIpAddress))
+            {
+                return;
+            }
+
+            MimeMessage message = new MimeMessage();
+
+            MailboxAddress from = new MailboxAddress("Notyfy",
+            "shopsecondhand2018@gmail.com");
+            message.From.Add(from);
+
+            MailboxAddress to = new MailboxAddress("Mike",
+            "michaeltiour@gmail.com");
+            message.To.Add(to);
+
+            message.Subject = "You have a new site gest!";
+
+            BodyBuilder bodyBuilder = new BodyBuilder();
+           // bodyBuilder.HtmlBody = $"<h1>Hi, Mike , your site has a new gests from ip: {remoteIpAddress}</h1>";
+            bodyBuilder.TextBody = $"Hi, Mike , your site has a new gest from ip: {remoteIpAddress}";
+
+            message.Body = bodyBuilder.ToMessageBody();
+
+            SmtpClient client = new SmtpClient();
+            client.Connect("smtp.gmail.com", 465, true);
+            client.Authenticate("shopsecondhand2018@gmail.com", "1950t03b03");
+
+            client.Send(message);
+            client.Disconnect(true);
+            client.Dispose();
+
         }
     }
 }

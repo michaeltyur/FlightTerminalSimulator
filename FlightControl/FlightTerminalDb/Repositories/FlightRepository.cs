@@ -112,7 +112,7 @@ namespace FlightTerminalDb.Repositories
         {
             lock (_writeReadLock)
             {
-                var itemsToDelete = _terminalContextDb.Flights.OrderBy(f=>f.Created).Take(quantity);
+                var itemsToDelete = _terminalContextDb.Flights.OrderBy(f => f.Created).Take(quantity);
 
                 foreach (var item in itemsToDelete)
                 {
@@ -150,8 +150,21 @@ namespace FlightTerminalDb.Repositories
 
         public Flight GetFlight(Guid id)
         {
-            var flight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == id);
-            return flight;
+            lock (_writeReadLock)
+            {
+                var flight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == id);
+                return flight;
+            }
+
+        }
+
+        public bool ContensIp(string ip)
+        {
+            lock (_writeReadLock)
+            {
+                return _terminalContextDb.Flights.Where(el => el.SenderIp == ip).Count() > 0;
+            }
+
         }
     }
 }

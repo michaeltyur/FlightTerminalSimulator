@@ -12,5 +12,6 @@ namespace FlightTerminalDb.Interfaces
         bool Update(Flight flight);
         bool DeleteFlight(Guid id);
         ICollection<Flight> GetAllFlights();
+        bool ContensIp(string ip);
     }
 }
