@@ -19,7 +19,7 @@ namespace FlightControl.Core.Hubs
         private ITerminalEmitter _terminalEmitter;
         private DbManager _dbManager;
         private IHttpContextAccessor _accessor;
-        private readonly string  myIp= "79.176.225.33.test";
+        private readonly string  myIp= "79.176.225.33";
 
         public TerminalHub(ITerminalContext terminalContext,
                            ITerminalEmitter terminalEmitter,
@@ -76,7 +76,7 @@ namespace FlightControl.Core.Hubs
 
         public void SendMail(string remoteIpAddress)
         {
-            if (remoteIpAddress==myIp || _dbManager.FlightRepository.ContensIp(remoteIpAddress))
+            if (_dbManager.FlightRepository.ContensIp(remoteIpAddress))
             {
                 return;
             }

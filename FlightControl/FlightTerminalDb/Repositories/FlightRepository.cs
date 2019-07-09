@@ -24,147 +24,178 @@ namespace FlightTerminalDb.Repositories
         {
             lock (_writeReadLock)
             {
-                try
+                var saved = false;
+                while (!saved)
                 {
-                    if (_terminalContextDb.Flights.Count() > 100)
+                    try
                     {
-                        DeleteMultiply(50);
+                        if (_terminalContextDb.Flights.Count() > 100)
+                        {
+                            DeleteMultiply(50);
+                        }
+
+                        // if (flight.Id == Guid.Empty) flight.Id = Guid.NewGuid();
+                        flight.Created = DateTime.Now;
+                        _terminalContextDb.Add(flight);
+                        _terminalContextDb.SaveChanges();
+
+                        return flight.Id;
                     }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        foreach (var entry in ex.Entries)
+                        {
+                            if (entry.Entity is Flight)
+                            {
+                                var proposedValues = entry.CurrentValues;
+                                var databaseValues = entry.GetDatabaseValues();
 
-                    // if (flight.Id == Guid.Empty) flight.Id = Guid.NewGuid();
-                    flight.Created = DateTime.Now;
-                    _terminalContextDb.Add(flight);
-                    _terminalContextDb.SaveChanges();
+                                foreach (var property in proposedValues.Properties)
+                                {
+                                    var proposedValue = proposedValues[property];
+                                    var databaseValue = databaseValues[property];
 
-                    return flight.Id;
+                                    // TODO: decide which value should be written to database
+                                    // proposedValues[property] = <value to be saved>;
+                                }
+
+                                // Refresh original values to bypass next concurrency check
+                                entry.OriginalValues.SetValues(databaseValues);
+                            }
+                            else
+                            {
+                                throw new NotSupportedException(
+                                    "Don't know how to handle concurrency conflicts for "
+                                    + entry.Metadata.Name);
+                            }
+                        }
+
+                    }
                 }
-                catch (Exception ex)
-                {
-
-                    throw ex;
-                }
-
+                return Guid.Empty;
             }
 
 
-        }
-        private bool IsIdExist(Guid id)
+  
+
+    }
+    private bool IsIdExist(Guid id)
+    {
+        return _terminalContextDb.Flights.FirstOrDefault(l => l.Id == id) != null;
+    }
+    public bool Update(Flight flight)
+    {
+        lock (_writeReadLock)
         {
-            return _terminalContextDb.Flights.FirstOrDefault(l => l.Id == id) != null;
-        }
-        public bool Update(Flight flight)
-        {
-            lock (_writeReadLock)
+            if (flight != null)
             {
+
+                var oldFlight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == flight.Id);
+                if (flight != null)
+                {
+                    oldFlight.Created = flight.Created;
+                    oldFlight.DistanceToTerminal = flight.DistanceToTerminal;
+                    oldFlight.From = flight.From;
+                    oldFlight.Fuel = flight.Fuel;
+                    oldFlight.Image = flight.Image;
+                    // oldFlight.LogMsgs = flight.LogMsgs;
+                    oldFlight.Modified = DateTime.Now;
+                    oldFlight.NameOfСhiefPilot = flight.NameOfСhiefPilot;
+                    oldFlight.NumberOfPass = flight.NumberOfPass;
+                    oldFlight.PlaneTerminalState = flight.PlaneTerminalState;
+                    oldFlight.Speed = flight.Speed;
+
+                    _terminalContextDb.SaveChanges();
+                    return true;
+                }
+                return false;
+
+            }
+            return false;
+        }
+
+    }
+
+    public bool DeleteFlight(Guid id)
+    {
+        lock (_writeReadLock)
+        {
+            if (id != null)
+            {
+
+                var flight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == id);
                 if (flight != null)
                 {
 
-                    var oldFlight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == flight.Id);
-                    if (flight != null)
-                    {
-                        oldFlight.Created = flight.Created;
-                        oldFlight.DistanceToTerminal = flight.DistanceToTerminal;
-                        oldFlight.From = flight.From;
-                        oldFlight.Fuel = flight.Fuel;
-                        oldFlight.Image = flight.Image;
-                        // oldFlight.LogMsgs = flight.LogMsgs;
-                        oldFlight.Modified = DateTime.Now;
-                        oldFlight.NameOfСhiefPilot = flight.NameOfСhiefPilot;
-                        oldFlight.NumberOfPass = flight.NumberOfPass;
-                        oldFlight.PlaneTerminalState = flight.PlaneTerminalState;
-                        oldFlight.Speed = flight.Speed;
-
-                        _terminalContextDb.SaveChanges();
-                        return true;
-                    }
-                    return false;
-
+                    _terminalContextDb.Remove(flight);
+                    _terminalContextDb.SaveChanges();
+                    return true;
                 }
                 return false;
-            }
 
+            }
+            return false;
         }
 
-        public bool DeleteFlight(Guid id)
+    }
+
+    public bool DeleteMultiply(int quantity)
+    {
+        lock (_writeReadLock)
         {
-            lock (_writeReadLock)
+            var itemsToDelete = _terminalContextDb.Flights.OrderBy(f => f.Created).Take(quantity);
+
+            foreach (var item in itemsToDelete)
             {
-                if (id != null)
+
+                var log = _terminalContextDb.LogMsgs.FirstOrDefault(l => l.FlightId.Equals(item.Id));
+                if (log != null)
                 {
-
-                    var flight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == id);
-                    if (flight != null)
-                    {
-
-                        _terminalContextDb.Remove(flight);
-                        _terminalContextDb.SaveChanges();
-                        return true;
-                    }
-                    return false;
+                    _terminalContextDb.LogMsgs.Remove(log);
 
                 }
-                return false;
+
+                DeleteFlight(item.Id);
             }
-
+            _terminalContextDb.SaveChanges();
+            // _terminalContextDb.LogMsgs.RemoveRange(logs);
+            //  _terminalContextDb.Flights.RemoveRange(itemsToDelete);
+            //  _terminalContextDb.SaveChanges();
         }
+        return true;
 
-        public bool DeleteMultiply(int quantity)
+    }
+
+    public void Dispose()
+    {
+        _terminalContextDb.Dispose();
+    }
+
+    public ICollection<Flight> GetAllFlights()
+    {
+        lock (_writeReadLock)
         {
-            lock (_writeReadLock)
-            {
-                var itemsToDelete = _terminalContextDb.Flights.OrderBy(f => f.Created).Take(quantity);
-
-                foreach (var item in itemsToDelete)
-                {
-
-                    var log = _terminalContextDb.LogMsgs.FirstOrDefault(l => l.FlightId.Equals(item.Id));
-                    if (log != null)
-                    {
-                        _terminalContextDb.LogMsgs.Remove(log);
-
-                    }
-
-                    DeleteFlight(item.Id);
-                }
-                _terminalContextDb.SaveChanges();
-                // _terminalContextDb.LogMsgs.RemoveRange(logs);
-                //  _terminalContextDb.Flights.RemoveRange(itemsToDelete);
-                //  _terminalContextDb.SaveChanges();
-            }
-            return true;
-
-        }
-
-        public void Dispose()
-        {
-            _terminalContextDb.Dispose();
-        }
-
-        public ICollection<Flight> GetAllFlights()
-        {
-            lock (_writeReadLock)
-            {
-                return _terminalContextDb.Flights.ToList();
-            }
-        }
-
-        public Flight GetFlight(Guid id)
-        {
-            lock (_writeReadLock)
-            {
-                var flight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == id);
-                return flight;
-            }
-
-        }
-
-        public bool ContensIp(string ip)
-        {
-            lock (_writeReadLock)
-            {
-                return _terminalContextDb.Flights.Where(el => el.SenderIp == ip).Count() > 0;
-            }
-
+            return _terminalContextDb.Flights.ToList();
         }
     }
+
+    public Flight GetFlight(Guid id)
+    {
+        lock (_writeReadLock)
+        {
+            var flight = _terminalContextDb.Flights.FirstOrDefault(fl => fl.Id == id);
+            return flight;
+        }
+
+    }
+
+    public bool ContensIp(string ip)
+    {
+        lock (_writeReadLock)
+        {
+            return _terminalContextDb.Flights.Where(el => el.SenderIp == ip).Count() > 0;
+        }
+
+    }
+}
 }

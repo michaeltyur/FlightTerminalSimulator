@@ -65,7 +65,13 @@ export class FlightService {
       })
       .catch(err => {
         console.error("Error while establishing connection :(");
-
+        if (this.currentUrl==="http://michaelt-001-site1.btempurl.com/terminal") {
+          this.currentUrl="http://localhost:12345/terminal"
+        }
+        else{
+          this.currentUrl="http://michaelt-001-site1.btempurl.com/terminal"
+        }
+        this.starthubConnection();
         this.messageService.alertMsgEmitter(
           "danger",
           "Error while establishing connection :("
