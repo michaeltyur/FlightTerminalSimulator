@@ -15,7 +15,7 @@ const httpOptions = {
 })
 export class FlightService {
   private _hubConnection: HubConnection;
-
+ //new commit 1
   interval;
   timeInterval = 3;
   connectTimer;
