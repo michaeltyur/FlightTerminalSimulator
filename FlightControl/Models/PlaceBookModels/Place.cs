@@ -12,5 +12,7 @@ namespace Models.PlaceBookModels
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public int Zoom { get; set; }
+        public List<PlaceImages> PlaceImages { get; set; }
+
     }
 }

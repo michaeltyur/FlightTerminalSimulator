@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -24,9 +25,11 @@ namespace FlightControl.Core.Controllers
         public PlaceBookController(IConfiguration configuration)
         {
             Configuration = configuration;
-            placeBookHelper = new PlaceBookHelper();
             connectionString = Configuration["ConnectionStrings:MapDBConnection"];
+            placeBookHelper = new PlaceBookHelper(connectionString);
         }
+
+        #region Place
         [HttpPost("AddPlace")]
         public ServerResponse AddPlace(Place place)
         {
@@ -34,29 +37,7 @@ namespace FlightControl.Core.Controllers
             {
                 ServerResponse serverResponse = new ServerResponse();
 
-                string sql = "Insert Into Place (Name ";
-                if (!string.IsNullOrEmpty(place.Text)) sql += ", Text ";
-                if (place.Latitude > 0) sql += ", Latitude ";
-                if (place.Longitude > 0) sql += ",Longitude ";
-                if (place.Zoom > 0) sql += ", Zoom ";
-                sql += $") OUTPUT INSERTED.PlaceID Values ('{place.Name}' ";
-                if (!string.IsNullOrEmpty(place.Text)) sql += $", '{place.Text}' ";
-                if (place.Latitude > 0) sql += $", '{place.Latitude}' ";
-                if (place.Longitude > 0) sql += $", '{place.Longitude} ";
-                if (place.Zoom > 0) sql += $", '{place.Zoom}'";
-                sql += ") ";
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-
-                        serverResponse.ID = (int)command.ExecuteScalar();
-
-                        connection.Close();
-                    }
-                }
+                serverResponse.ID = placeBookHelper.AddPlace(place);
 
                 return serverResponse;
             }
@@ -65,6 +46,35 @@ namespace FlightControl.Core.Controllers
                 throw ex;
             }
         }
+
+        [HttpPost("UpdatePlace")]
+        public ServerResponse UpdatePlace(Place place)
+        {
+            try
+            {
+                ServerResponse serverResponse = new ServerResponse();
+
+                bool result = placeBookHelper.UpdatePlace(place);
+
+                if (result)
+                {
+                    serverResponse.Message = "Place updated";
+                }
+                else
+                {
+                    serverResponse.Error = "Error update place";
+                }
+
+                return serverResponse;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog errorLog = new ErrorLog {Title="Update Place",Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
+                throw ex;
+            }
+        }
+        #endregion
 
         [HttpPost("AddBook")]
         public ServerResponse AddBook(Book book)
@@ -73,25 +83,7 @@ namespace FlightControl.Core.Controllers
             {
                 ServerResponse serverResponse = new ServerResponse();
 
-                string sql = "Insert Into Book (Name ";
-                if (!string.IsNullOrEmpty(book.Autor)) sql += ", Autor ";
-                if (!string.IsNullOrEmpty(book.Text)) sql += ", Text ";
-                sql += $") OUTPUT INSERTED.BookID Values ('{book.Name}' ";
-                if (!string.IsNullOrEmpty(book.Autor)) sql += $", '{book.Autor}' ";
-                if (!string.IsNullOrEmpty(book.Text)) sql += $", '{book.Text}' ";
-                sql += ") ";
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-
-                        serverResponse.ID = (int)command.ExecuteScalar();
-
-                        connection.Close();
-                    }
-                }
+                serverResponse.ID = placeBookHelper.AddBook(book);
 
                 return serverResponse;
             }
@@ -102,9 +94,8 @@ namespace FlightControl.Core.Controllers
             }
         }
 
-        [HttpPost("UploadFile")]
-        // public async Task<ServerResponse> UploadFile(List<IFormFile> files)
-        public async Task<ServerResponse> UploadFile([FromBody]ImagesRequest imagesRequest)
+        [HttpPost("UploadFiles")]
+        public async Task<ServerResponse> UploadFiles([FromForm]ImagesRequest imagesRequest)
         {
             int parentID = imagesRequest.ParentID;
             string parentName = imagesRequest.ParentName;
@@ -133,20 +124,28 @@ namespace FlightControl.Core.Controllers
                         await file.CopyToAsync(stream);
                     }
 
-                    numberOfUploadedFiles++;
 
-                    //PlaceImages placeImages = new PlaceImages 
-                    //{ 
-                    //  PlaceID = par
-                    //};
+                    PlaceImages placeImages = new PlaceImages
+                    {
+                        PlaceID = parentID,
+                        Name = parentName,
+                        ImagePath = path,
+                        FileName = fullFileName
+                    };
 
-                    //int placeImageID = InsertPlaceImage();
+                    int placeImageID = placeBookHelper.InsertPlaceImage(placeImages);
+
+                    if (placeImageID > 0)
+                    {
+                        numberOfUploadedFiles++;
+                    }
+
 
                 }
                 catch (Exception ex)
                 {
                     ErrorLog errorLog = new ErrorLog { Title = "Upload file error", Description = ex.ToString() };
-                    WriteErrorLog(errorLog);
+                    placeBookHelper.WriteErrorLog(errorLog);
                 }
             }
 
@@ -172,25 +171,19 @@ namespace FlightControl.Core.Controllers
             return File(memory, placeBookHelper.GetContentType(path), Path.GetFileName(path));
         }
 
-        private int WriteErrorLog(ErrorLog errorLog)
+        [HttpPost("DeletePlaceFiles")]
+        public int DeletePlaceFiles(List<PlaceImages> placeImages)
         {
             try
             {
-                string connectionString = Configuration["ConnectionStrings:MapDBConnection"];
-                int id = 0;
-                string sql = $"INSERT INTO ErrorLog (Title,[Description]) OUTPUT INSERTED.ErrorLogID VALUES('{errorLog.Title}','{errorLog.Description}')";
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                int numberRemoved = 0;
+                
+                foreach (var file in placeImages)
                 {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
+                
 
-                        id = (int)command.ExecuteScalar();
-
-                        connection.Close();
-                    }
                 }
-                return id;
+                return numberRemoved;
             }
             catch (Exception ex)
             {
@@ -199,31 +192,7 @@ namespace FlightControl.Core.Controllers
             }
         }
 
-        private int InsertPlaceImage(PlaceImages placeImage)
-        {
-            try
-            {
-                int id = 0;
-                string sql = $"INSERT INTO PlaceImages ( PlaceID, Name, ImagePath, FileName ) VALUES('{placeImage.PlaceID}','{placeImage.Name}','{placeImage.ImagePath}','{placeImage.FileName}')";
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-
-                        id = (int)command.ExecuteScalar();
-
-                        connection.Close();
-                    }
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
+ 
 
     }
 }
