@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using System;
 using System.IO;
 
@@ -43,13 +44,20 @@ namespace FlightControl.Core
             services.AddSingleton<ITerminalEmitter, TerminalEmitter>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            // Place Map/Book Project
+            services.AddSingleton<IFileProvider>(
+            new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "Images/PlaceBookImages")));
+
             services.AddCors(o => o.AddPolicy(CorsPolicy, builder => {
                 builder
                 .WithOrigins("https://flight-terminal-receiver.firebaseapp.com")
                 .WithOrigins("http://michaelt-001-site1.btempurl.com")
-                .WithOrigins("http://localhost:4300")
-                .WithOrigins("http://localhost:4200")
+                //.WithOrigins("http://localhost:4300")
+                //.WithOrigins("http://localhost:4200")
                 .WithOrigins("http://michaelt-001-site2.btempurl.com")
+                .WithOrigins("https://live-project.space")
+                .WithOrigins("http://live-project.space")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()

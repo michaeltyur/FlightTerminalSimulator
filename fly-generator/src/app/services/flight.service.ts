@@ -25,9 +25,11 @@ export class FlightService {
   connectionStatus$ = new EventEmitter();
 
   flightControlUrl: string = "/api/flight";
-  currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  //currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  currentUrl = "https://live-project.space/terminal";
   //currentUrl = "http://localhost:12345/terminal";
-  terminalReceiverUrl = "http://michaelt-001-site2.btempurl.com";
+  //terminalReceiverUrl = "http://michaelt-001-site2.btempurl.com";
+  terminalReceiverUrl = "https://flight-terminal-receiver.firebaseapp.com";
   connectionId$ = new EventEmitter();
   connectionId: string;
 
@@ -66,11 +68,11 @@ export class FlightService {
       })
       .catch(err => {
         console.error("Error while establishing connection :(");
-        if (this.currentUrl==="http://michaelt-001-site1.btempurl.com/terminal") {
+        if (this.currentUrl==="https://live-project.space/terminal") {
           this.currentUrl="http://localhost:12345/terminal"
         }
         else{
-          this.currentUrl="http://michaelt-001-site1.btempurl.com/terminal"
+          this.currentUrl="https://live-project.space/terminal"
         }
         this.starthubConnection();
         this.messageService.alertMsgEmitter(

@@ -12,15 +12,20 @@ export class TerminalService {
   messageEmitter$ = new EventEmitter();
   terminalEmitter$ = new EventEmitter();
   selectedFlight$ = new EventEmitter<Flight>();
-  groupName:string;
+  groupName: string;
 
-  currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  //currentUrl = "http://michaelt-001-site1.btempurl.com/terminal";
+  currentUrl = "https://live-project.space/terminal";
   //currentUrl="http://localhost:12345/terminal";
 
-  connectionStatus$= new EventEmitter();;
+  connectionStatus$ = new EventEmitter();;
 
   constructor() {
+    this.startConnection();
 
+  }
+
+  startConnection(): void {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl(this.currentUrl)
       .build();
@@ -33,11 +38,15 @@ export class TerminalService {
         //   console.log(res);
         // }).catch(err=>console.error(err));
 
-        this.connectionStatus$.emit({connectionStatus:true,connectionInfo:"Connection started!"})
+        this.connectionStatus$.emit({ connectionStatus: true, connectionInfo: "Connection started!" })
         //console.log("Connection started!");
       })
       .catch(err => {
-        this.connectionStatus$.emit({connectionStatus:false,connectionInfo:"Error while establishing connection :("})
+        if (this.currentUrl === "https://live-project.space/terminal") {
+          this.currentUrl = "http://localhost:12345/terminal";
+          this.startConnection();
+        }
+        this.connectionStatus$.emit({ connectionStatus: false, connectionInfo: "Error while establishing connection :(" })
         console.error("Error while establishing connection :(");
         //location.reload();
       });
@@ -60,7 +69,7 @@ export class TerminalService {
     }
   }
 
-  addToGroup(groupName:string): Promise<any> {
-    return this._hubConnection.invoke("JoinGroup",groupName);
+  addToGroup(groupName: string): Promise<any> {
+    return this._hubConnection.invoke("JoinGroup", groupName);
   }
 }
