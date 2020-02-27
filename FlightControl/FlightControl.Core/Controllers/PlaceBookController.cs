@@ -20,17 +20,18 @@ namespace FlightControl.Core.Controllers
         public IConfiguration Configuration { get; }
         private PlaceBookHelper placeBookHelper;
         private const string fileDirectoryPath = "Images/PlaceBookImages";
+        private readonly string connectionString;
         public PlaceBookController(IConfiguration configuration)
         {
             Configuration = configuration;
             placeBookHelper = new PlaceBookHelper();
+            connectionString = Configuration["ConnectionStrings:MapDBConnection"];
         }
         [HttpPost("AddPlace")]
         public ServerResponse AddPlace(Place place)
         {
             try
             {
-                string connectionString = Configuration["ConnectionStrings:MapDBConnection"];
                 ServerResponse serverResponse = new ServerResponse();
 
                 string sql = "Insert Into Place (Name ";
@@ -70,7 +71,6 @@ namespace FlightControl.Core.Controllers
         {
             try
             {
-                string connectionString = Configuration["ConnectionStrings:MapDBConnection"];
                 ServerResponse serverResponse = new ServerResponse();
 
                 string sql = "Insert Into Book (Name ";
@@ -103,22 +103,30 @@ namespace FlightControl.Core.Controllers
         }
 
         [HttpPost("UploadFile")]
-        public async Task<ServerResponse> UploadFile(List<IFormFile> files)
+        // public async Task<ServerResponse> UploadFile(List<IFormFile> files)
+        public async Task<ServerResponse> UploadFile([FromBody]ImagesRequest imagesRequest)
         {
+            int parentID = imagesRequest.ParentID;
+            string parentName = imagesRequest.ParentName;
+            List<IFormFile> files = imagesRequest.Files;
+
             int numberOfUploadedFiles = 0;
 
-            if(files.Count == 0) return new ServerResponse { Error = "files not selected" };
+            if (files.Count == 0) return new ServerResponse { Error = "files not selected" };
 
             foreach (var file in files)
             {
                 try
                 {
+                    string fullFileName = $"{parentName}_{parentID}_{DateTime.Now.Ticks}_{file.FileName}";
+
                     if (file == null || file.Length == 0)
-                        return new ServerResponse { Error = "file not selected" };
+                        // return new ServerResponse { Error = "file not selected" };
+                        continue;
 
                     var path = Path.Combine(
                                 Directory.GetCurrentDirectory(), fileDirectoryPath,
-                                file.FileName);
+                                fullFileName);
 
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
@@ -126,6 +134,13 @@ namespace FlightControl.Core.Controllers
                     }
 
                     numberOfUploadedFiles++;
+
+                    //PlaceImages placeImages = new PlaceImages 
+                    //{ 
+                    //  PlaceID = par
+                    //};
+
+                    //int placeImageID = InsertPlaceImage();
 
                 }
                 catch (Exception ex)
@@ -164,6 +179,32 @@ namespace FlightControl.Core.Controllers
                 string connectionString = Configuration["ConnectionStrings:MapDBConnection"];
                 int id = 0;
                 string sql = $"INSERT INTO ErrorLog (Title,[Description]) OUTPUT INSERTED.ErrorLogID VALUES('{errorLog.Title}','{errorLog.Description}')";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+
+                        id = (int)command.ExecuteScalar();
+
+                        connection.Close();
+                    }
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private int InsertPlaceImage(PlaceImages placeImage)
+        {
+            try
+            {
+                int id = 0;
+                string sql = $"INSERT INTO PlaceImages ( PlaceID, Name, ImagePath, FileName ) VALUES('{placeImage.PlaceID}','{placeImage.Name}','{placeImage.ImagePath}','{placeImage.FileName}')";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
