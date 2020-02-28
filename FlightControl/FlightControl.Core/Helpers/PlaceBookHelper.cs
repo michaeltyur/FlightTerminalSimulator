@@ -53,7 +53,6 @@ namespace FlightControl.Core.Helpers
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@PlaceImagesID", id);
                     fileName = command.ExecuteScalar().ToString();
-
                     connection.Close();
                 }
             }
@@ -109,8 +108,8 @@ namespace FlightControl.Core.Helpers
             sql += $") OUTPUT INSERTED.PlaceID Values ('{place.Name}' ";
             if (!string.IsNullOrEmpty(place.Text)) sql += $", '{place.Text}' ";
             if (place.Latitude > 0) sql += $", '{place.Latitude}' ";
-            if (place.Longitude > 0) sql += $", '{place.Longitude} ";
-            if (place.Zoom > 0) sql += $", '{place.Zoom}'";
+            if (place.Longitude > 0) sql += $", '{place.Longitude}' ";
+            if (place.Zoom > 0) sql += $", '{place.Zoom}' ";
             sql += ") ";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -151,6 +150,44 @@ namespace FlightControl.Core.Helpers
             }
             return result > 0;
 
+        }
+
+        /// <summary>
+        /// Delete Place by ID
+        /// </summary>
+        /// <param name="placeID">Place ID</param>
+        /// <returns>result of action</returns>
+        public bool DeletePlace(int placeID)
+        {
+            int result = 0;
+            string sql = "DeletePlaceByID";
+            List<string> fileNames = new List<string>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@PlaceID", placeID);
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        fileNames.Add(reader.GetString(0));
+                    }
+
+                     result = (int)command.Parameters["@PlaceID"].Value;
+
+                    connection.Close();
+                }
+            }
+
+            foreach (var fileName in fileNames)
+            {
+                DeleteFileLocal(fileName);
+            }
+
+            return result > 0;
         }
         #endregion
 

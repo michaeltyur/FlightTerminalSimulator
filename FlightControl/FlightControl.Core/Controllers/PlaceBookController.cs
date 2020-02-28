@@ -38,11 +38,17 @@ namespace FlightControl.Core.Controllers
                 ServerResponse serverResponse = new ServerResponse();
 
                 serverResponse.ID = placeBookHelper.AddPlace(place);
+                if (serverResponse.ID>0)
+                {
+                    serverResponse.Message = "Place added successfully";
+                }
 
                 return serverResponse;
             }
             catch (Exception ex)
             {
+                ErrorLog errorLog = new ErrorLog { Title = "Add Place", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
                 throw ex;
             }
         }
@@ -74,6 +80,40 @@ namespace FlightControl.Core.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet("DeletePlace")]
+        public ServerResponse DeletePlace(int placeID)
+        {
+            try
+            {
+                ServerResponse serverResponse = new ServerResponse();
+                if (placeID>0)
+                {
+                   bool result =  placeBookHelper.DeletePlace(placeID);
+                    if (result)
+                    {
+                        serverResponse.Message = "The place deleted";
+                    }
+                    else
+                    {
+                        serverResponse.Error = "error during delete";
+                    }
+                }
+                else
+                {
+                    serverResponse.Error = "placeID is incorrect";
+                }
+                return serverResponse;
+            }
+            catch (Exception ex)
+            {
+
+                ErrorLog errorLog = new ErrorLog { Title = "Delete Place", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
+                throw ex;
+            }
+
+        }
         #endregion
 
         [HttpPost("AddBook")]
@@ -103,6 +143,7 @@ namespace FlightControl.Core.Controllers
 
             int numberOfUploadedFiles = 0;
 
+            if (files == null) return new ServerResponse { Error = "files are null" };
             if (files.Count == 0) return new ServerResponse { Error = "files not selected" };
 
             foreach (var file in files)
