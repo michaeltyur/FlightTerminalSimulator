@@ -116,6 +116,7 @@ namespace FlightControl.Core.Controllers
         }
         #endregion
 
+        #region Book
         [HttpPost("AddBook")]
         public ServerResponse AddBook(Book book)
         {
@@ -129,11 +130,42 @@ namespace FlightControl.Core.Controllers
             }
             catch (Exception ex)
             {
-
+                ErrorLog errorLog = new ErrorLog { Title = "Add Book", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
                 throw ex;
             }
         }
 
+        [HttpPost("UpdateBook")]
+        public ServerResponse UpdateBook(Book book)
+        {
+            try
+            {
+                ServerResponse serverResponse = new ServerResponse();
+
+                bool result = placeBookHelper.UpdateBook(book);
+                if (result)
+                {
+                    serverResponse.Message = "Book updated";
+                }
+                else
+                {
+                    serverResponse.Error = "Error during updating book";
+                }
+
+                return serverResponse;
+            }
+            catch (Exception ex)
+            {
+
+                ErrorLog errorLog = new ErrorLog { Title = "Update Book", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
+                throw ex;
+            }
+        }
+
+        #endregion
+        #region File
         [HttpPost("UploadFiles")]
         public async Task<ServerResponse> UploadFiles([FromForm]ImagesRequest imagesRequest)
         {
@@ -232,8 +264,8 @@ namespace FlightControl.Core.Controllers
                 throw ex;
             }
         }
+        #endregion
 
- 
 
     }
 }

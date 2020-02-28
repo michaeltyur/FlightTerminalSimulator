@@ -95,7 +95,6 @@ namespace FlightControl.Core.Helpers
             }
         }
 
-
         #region Place
         public int AddPlace(Place place)
         {
@@ -159,7 +158,7 @@ namespace FlightControl.Core.Helpers
         /// <returns>result of action</returns>
         public bool DeletePlace(int placeID)
         {
-            int result = 0;
+            bool result = true;
             string sql = "DeletePlaceByID";
             List<string> fileNames = new List<string>();
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -176,8 +175,6 @@ namespace FlightControl.Core.Helpers
                         fileNames.Add(reader.GetString(0));
                     }
 
-                     result = (int)command.Parameters["@PlaceID"].Value;
-
                     connection.Close();
                 }
             }
@@ -187,11 +184,16 @@ namespace FlightControl.Core.Helpers
                 DeleteFileLocal(fileName);
             }
 
-            return result > 0;
+            return result;
         }
         #endregion
 
         #region Book
+        /// <summary>
+        /// Add new Book to db
+        /// </summary>
+        /// <param name="book">Name of the book</param>
+        /// <returns></returns>
         public int AddBook(Book book)
         {
             int id = 0;
@@ -216,6 +218,65 @@ namespace FlightControl.Core.Helpers
             }
             return id;
         }
+
+        public bool UpdateBook(Book book)
+        {
+            int rows = 0;
+            string sql = $"UPDATE dbo.Book SET Name = '{book.Name}' ";
+            if (!string.IsNullOrEmpty(book.Autor)) sql += $", Autor = '{book.Autor}' ";
+            if (!string.IsNullOrEmpty(book.Text)) sql += $", Text = '{book.Text}' ";
+            sql += $" WHERE BookID = '{book.BookID}' ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    connection.Open();
+
+                    rows = command.ExecuteNonQuery();
+
+                    connection.Close();
+                }
+            }
+            return rows > 0;
+        }
+
+        /// <summary>
+        /// Delete Book from Db
+        /// </summary>
+        /// <param name="bookID"></param>
+        /// <returns></returns>
+        public bool DeleteBook(int bookID)
+        {
+            bool result = true;
+            string sql = "DeletePlaceByID";
+            List<string> fileNames = new List<string>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@BookID", bookID);
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        fileNames.Add(reader.GetString(0));
+                    }
+
+                    connection.Close();
+                }
+            }
+
+            foreach (var fileName in fileNames)
+            {
+                DeleteFileLocal(fileName);
+            }
+
+            return result ;
+        }
+
         #endregion
 
         #region Place Image
@@ -247,6 +308,31 @@ namespace FlightControl.Core.Helpers
         #endregion
 
         #region Book Image
+        public int InsertBookImage(BookImages bookImage)
+        {
+            try
+            {
+                int id = 0;
+                string sql = $"INSERT INTO BookImages ( BookID, Name, ImagePath, FileName ) OUTPUT INSERTED.BookImagesID VALUES('{bookImage.BookID}','{bookImage.Name}','{bookImage.ImagePath}','{bookImage.FileName}')";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+
+                        id = (int)command.ExecuteScalar();
+
+                        connection.Close();
+                    }
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         #endregion
     }
 
