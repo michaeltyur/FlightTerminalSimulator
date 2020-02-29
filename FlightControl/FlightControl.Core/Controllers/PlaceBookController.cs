@@ -258,7 +258,6 @@ namespace FlightControl.Core.Controllers
             if (files == null) return new ServerResponse { Error = "files are null" };
             if (files.Count == 0) return new ServerResponse { Error = "files not selected" };
 
-            List<ObjectImage> imagesAdded = new List<ObjectImage>();
 
             foreach (var file in files)
             {
@@ -294,7 +293,6 @@ namespace FlightControl.Core.Controllers
                         if (imageID > 0)
                         {
                             placeImages.PlaceImagesID = imageID;
-                            imagesAdded.Add(placeImages);
                         }
                     }
                     else if (parentType == ParentType.book.ToString())
@@ -311,7 +309,7 @@ namespace FlightControl.Core.Controllers
                         if (imageID > 0)
                         {
                             bookImages.BookImagesID = imageID;
-                            imagesAdded.Add(bookImages);
+
                         }
                     }
 
@@ -333,7 +331,10 @@ namespace FlightControl.Core.Controllers
                 }
             }
 
-            if (imagesAdded.Count > 0) serverResponse.ImagesData = imagesAdded;
+            serverResponse.ImagesData = (parentType == ParentType.place.ToString())
+                ? placeBookHelper.GetPlaceImagesByParentID(parentID)
+                : placeBookHelper.GetBookImagesByParentID(parentID);
+
             serverResponse.Message = $"{numberOfUploadedFiles} files uploaded";
             return serverResponse;
         }
@@ -381,7 +382,7 @@ namespace FlightControl.Core.Controllers
 
         #region Images
         [HttpGet("GetPlaceImagesByParentID")]
-        public List<PlaceImages> GetPlaceImagesByParentID(int parentID)
+        public List<ObjectImage> GetPlaceImagesByParentID(int parentID)
         {
             try
             {
@@ -395,7 +396,7 @@ namespace FlightControl.Core.Controllers
             }
         }
         [HttpGet("GetBookImagesByParentID")]
-        public List<BookImages> GetBookImagesByParentID(int parentID)
+        public List<ObjectImage> GetBookImagesByParentID(int parentID)
         {
             try
             {

@@ -1,4 +1,5 @@
 ﻿using Models.PlaceBookModels;
+using Models.PlaceBookModels.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -371,9 +372,9 @@ namespace FlightControl.Core.Helpers
         #endregion
 
         #region Place Image
-        public List<PlaceImages> GetPlaceImagesByParentID(int parentID)
+        public List<ObjectImage> GetPlaceImagesByParentID(int parentID)
         {
-            List<PlaceImages> images = new List<PlaceImages>();
+            List<ObjectImage> images = new List<ObjectImage>();
             string sql = $"SELECT * FROM PlaceImages WHERE PlaceID = '{parentID}' ";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -390,6 +391,7 @@ namespace FlightControl.Core.Helpers
                         image.Name = DBNull.Value != reader["Name"] ? reader["Name"].ToString() : default;
                         image.ImagePath = DBNull.Value != reader["ImagePath"] ? reader["ImagePath"].ToString() : default;
                         image.FileName = DBNull.Value != reader["FileName"] ? reader["FileName"].ToString() : default;
+                        images.Add(image);
                     }
 
                     connection.Close();
@@ -425,9 +427,9 @@ namespace FlightControl.Core.Helpers
         #endregion
 
         #region Book Image
-        public List<BookImages> GetBookImagesByParentID(int parentID)
+        public List<ObjectImage> GetBookImagesByParentID(int parentID)
         {
-            List<BookImages> images = new List<BookImages>();
+            List<ObjectImage> images = new List<ObjectImage>();
             string sql = $"SELECT * FROM dbo.BookImages WHERE PlaceID = '{parentID}' ";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -444,6 +446,7 @@ namespace FlightControl.Core.Helpers
                         image.Name = DBNull.Value != reader["Name"] ? reader["Name"].ToString() : default;
                         image.ImagePath = DBNull.Value != reader["ImagePath"] ? reader["ImagePath"].ToString() : default;
                         image.FileName = DBNull.Value != reader["FileName"] ? reader["FileName"].ToString() : default;
+                        images.Add(image);
                     }
 
                     connection.Close();
