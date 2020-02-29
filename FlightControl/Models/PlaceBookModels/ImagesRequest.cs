@@ -7,6 +7,7 @@ namespace Models.PlaceBookModels
     {
         public int ParentID { get; set; }
         public string ParentName { get; set; }
+        public string ParentType { get; set; }
         public List <IFormFile> Files { get; set; }
     }
 }

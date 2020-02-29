@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.PlaceBookModels.Interface;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,5 +10,6 @@ namespace Models.PlaceBookModels
         public int ID { get; set; }
         public string Error { get; set; }
         public string Message { get; set; }
+        public List<ObjectImage> ImagesData { get; set; }
     }
 }

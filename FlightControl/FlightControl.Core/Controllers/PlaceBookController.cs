@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Models.PlaceBookModels;
+using Models.PlaceBookModels.Interface;
 
 namespace FlightControl.Core.Controllers
 {
@@ -30,6 +31,21 @@ namespace FlightControl.Core.Controllers
         }
 
         #region Place
+        [HttpGet("GetAllPlaces")]
+        public List<Place> GetAllPlaces()
+        {
+            try
+            {
+                return placeBookHelper.GetAllPlaces();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog errorLog = new ErrorLog { Title = "Get All Place", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
+                throw ex;
+            }
+        }
+
         [HttpPost("AddPlace")]
         public ServerResponse AddPlace(Place place)
         {
@@ -37,8 +53,14 @@ namespace FlightControl.Core.Controllers
             {
                 ServerResponse serverResponse = new ServerResponse();
 
+                if (placeBookHelper.IsPlaceExist(place.Name))
+                {
+                    serverResponse.Error = "Name already exists";
+                    return serverResponse;
+                }
+
                 serverResponse.ID = placeBookHelper.AddPlace(place);
-                if (serverResponse.ID>0)
+                if (serverResponse.ID > 0)
                 {
                     serverResponse.Message = "Place added successfully";
                 }
@@ -75,7 +97,7 @@ namespace FlightControl.Core.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLog errorLog = new ErrorLog {Title="Update Place",Description = ex.ToString() };
+                ErrorLog errorLog = new ErrorLog { Title = "Update Place", Description = ex.ToString() };
                 placeBookHelper.WriteErrorLog(errorLog);
                 throw ex;
             }
@@ -87,9 +109,9 @@ namespace FlightControl.Core.Controllers
             try
             {
                 ServerResponse serverResponse = new ServerResponse();
-                if (placeID>0)
+                if (placeID > 0)
                 {
-                   bool result =  placeBookHelper.DeletePlace(placeID);
+                    bool result = placeBookHelper.DeletePlace(placeID);
                     if (result)
                     {
                         serverResponse.Message = "The place deleted";
@@ -117,12 +139,34 @@ namespace FlightControl.Core.Controllers
         #endregion
 
         #region Book
+
+        [HttpGet("GetAllBooks")]
+        public List<Book> GetAllBooks()
+        {
+            try
+            {
+                return placeBookHelper.GetAllBooks();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog errorLog = new ErrorLog { Title = "Get All Book", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
+                throw ex;
+            }
+        }
+
         [HttpPost("AddBook")]
         public ServerResponse AddBook(Book book)
         {
             try
             {
                 ServerResponse serverResponse = new ServerResponse();
+
+                if (placeBookHelper.IsBookExist(book.Name))
+                {
+                    serverResponse.Error = "Name already exists";
+                    return serverResponse;
+                }
 
                 serverResponse.ID = placeBookHelper.AddBook(book);
 
@@ -164,19 +208,57 @@ namespace FlightControl.Core.Controllers
             }
         }
 
+        [HttpGet("DeleteBook")]
+        public ServerResponse DeleteBook(int bookID)
+        {
+            try
+            {
+                ServerResponse serverResponse = new ServerResponse();
+                if (bookID > 0)
+                {
+                    bool result = placeBookHelper.DeleteBook(bookID);
+                    if (result)
+                    {
+                        serverResponse.Message = "The book deleted";
+                    }
+                    else
+                    {
+                        serverResponse.Error = "error during delete";
+                    }
+                }
+                else
+                {
+                    serverResponse.Error = "bookID is incorrect";
+                }
+                return serverResponse;
+            }
+            catch (Exception ex)
+            {
+
+                ErrorLog errorLog = new ErrorLog { Title = "Delete Book", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
+                throw ex;
+            }
+
+        }
         #endregion
+
         #region File
         [HttpPost("UploadFiles")]
         public async Task<ServerResponse> UploadFiles([FromForm]ImagesRequest imagesRequest)
         {
+            ServerResponse serverResponse = new ServerResponse();
             int parentID = imagesRequest.ParentID;
             string parentName = imagesRequest.ParentName;
             List<IFormFile> files = imagesRequest.Files;
+            string parentType = imagesRequest.ParentType;
 
             int numberOfUploadedFiles = 0;
 
             if (files == null) return new ServerResponse { Error = "files are null" };
             if (files.Count == 0) return new ServerResponse { Error = "files not selected" };
+
+            List<ObjectImage> imagesAdded = new List<ObjectImage>();
 
             foreach (var file in files)
             {
@@ -196,21 +278,50 @@ namespace FlightControl.Core.Controllers
                     {
                         await file.CopyToAsync(stream);
                     }
-
-
-                    PlaceImages placeImages = new PlaceImages
+                    int imageID = 0;
+                    if (parentType == ParentType.place.ToString())
                     {
-                        PlaceID = parentID,
-                        Name = parentName,
-                        ImagePath = path,
-                        FileName = fullFileName
-                    };
+                        PlaceImages placeImages = new PlaceImages
+                        {
+                            PlaceID = parentID,
+                            Name = parentName,
+                            ImagePath = path,
+                            FileName = fullFileName
+                        };
 
-                    int placeImageID = placeBookHelper.InsertPlaceImage(placeImages);
+                        imageID = placeBookHelper.InsertPlaceImage(placeImages);
 
-                    if (placeImageID > 0)
+                        if (imageID > 0)
+                        {
+                            placeImages.PlaceImagesID = imageID;
+                            imagesAdded.Add(placeImages);
+                        }
+                    }
+                    else if (parentType == ParentType.book.ToString())
+                    {
+                        BookImages bookImages = new BookImages
+                        {
+                            BookID = parentID,
+                            Name = parentName,
+                            ImagePath = path,
+                            FileName = fullFileName
+                        };
+
+                        imageID = placeBookHelper.InsertBookImage(bookImages);
+                        if (imageID > 0)
+                        {
+                            bookImages.BookImagesID = imageID;
+                            imagesAdded.Add(bookImages);
+                        }
+                    }
+
+                    if (imageID > 0)
                     {
                         numberOfUploadedFiles++;
+                    }
+                    else
+                    {
+                        placeBookHelper.DeleteFileLocal(fullFileName);
                     }
 
 
@@ -222,7 +333,9 @@ namespace FlightControl.Core.Controllers
                 }
             }
 
-            return new ServerResponse { Message = $"{numberOfUploadedFiles} files uploaded" };
+            if (imagesAdded.Count > 0) serverResponse.ImagesData = imagesAdded;
+            serverResponse.Message = $"{numberOfUploadedFiles} files uploaded";
+            return serverResponse;
         }
 
         [HttpPost("DownloadFile")]
@@ -250,10 +363,10 @@ namespace FlightControl.Core.Controllers
             try
             {
                 int numberRemoved = 0;
-                
+
                 foreach (var file in placeImages)
                 {
-                
+
 
                 }
                 return numberRemoved;
@@ -261,6 +374,37 @@ namespace FlightControl.Core.Controllers
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Images
+        [HttpGet("GetPlaceImagesByParentID")]
+        public List<PlaceImages> GetPlaceImagesByParentID(int parentID)
+        {
+            try
+            {
+                return placeBookHelper.GetPlaceImagesByParentID(parentID);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog errorLog = new ErrorLog { Title = "Get All PlaceImages By ID", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
+                throw ex;
+            }
+        }
+        [HttpGet("GetBookImagesByParentID")]
+        public List<BookImages> GetBookImagesByParentID(int parentID)
+        {
+            try
+            {
+                return placeBookHelper.GetBookImagesByParentID(parentID);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog errorLog = new ErrorLog { Title = "Get All BookImages By ID", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
                 throw ex;
             }
         }
