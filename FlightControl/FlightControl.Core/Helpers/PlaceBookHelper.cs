@@ -41,10 +41,15 @@ namespace FlightControl.Core.Helpers
                 {".csv", "text/csv"}
             };
         }
-        public string DeleteFileFromDB(int id)
+
+        /// <summary>
+        /// Delete Image from db
+        /// </summary>
+        /// <returns>Image local path</returns>
+        public string DeleteFileFromDB(int id,ParentType parentType)
         {
             string fileName = string.Empty;
-            string sql = $"PlaceImagesDelete";
+            string sql = (parentType==ParentType.place)? "PlaceImagesDelete": "BookImagesDelete";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(sql, connection))
@@ -52,13 +57,14 @@ namespace FlightControl.Core.Helpers
                     connection.Open();
 
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@PlaceImagesID", id);
+                    command.Parameters.AddWithValue("@ImageID", id);
                     fileName = command.ExecuteScalar().ToString();
                     connection.Close();
                 }
             }
             return fileName;
         }
+
 
         public bool DeleteFileLocal(string fileName)
         {
@@ -430,7 +436,7 @@ namespace FlightControl.Core.Helpers
         public List<ObjectImage> GetBookImagesByParentID(int parentID)
         {
             List<ObjectImage> images = new List<ObjectImage>();
-            string sql = $"SELECT * FROM dbo.BookImages WHERE PlaceID = '{parentID}' ";
+            string sql = $"SELECT * FROM dbo.BookImages WHERE BookID = '{parentID}' ";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(sql, connection))

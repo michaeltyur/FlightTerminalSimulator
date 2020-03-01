@@ -21,7 +21,7 @@ namespace FlightControl.Core.Controllers
         //private const string CONNECTION_DB_STRING = "Data Source=SQL5052.site4now.net;Initial Catalog=DB_A4A6EE_map;User Id=DB_A4A6EE_map_admin;Password=1950t03b03;";
         public IConfiguration Configuration { get; }
         private PlaceBookHelper placeBookHelper;
-        private const string fileDirectoryPath = "Images/PlaceBookImages";
+        private const string fileDirectoryPath = @"Images\PlaceBookImages";
         private readonly string connectionString;
         public PlaceBookController(IConfiguration configuration)
         {
@@ -358,19 +358,24 @@ namespace FlightControl.Core.Controllers
             return File(memory, placeBookHelper.GetContentType(path), Path.GetFileName(path));
         }
 
-        [HttpPost("DeletePlaceFiles")]
-        public int DeletePlaceFiles(List<PlaceImages> placeImages)
+        [HttpGet("DeleteImageFile")]
+        public bool DeleteImageFile(int imageID, ParentType parentType)
         {
             try
             {
-                int numberRemoved = 0;
+                string filePath = default;
 
-                foreach (var file in placeImages)
+                filePath = placeBookHelper.DeleteFileFromDB(imageID, parentType);
+                if (!string.IsNullOrEmpty(filePath))
                 {
-
-
+                    placeBookHelper.DeleteFileLocal(filePath);
+                    return true;
                 }
-                return numberRemoved;
+                else
+                {
+                    return false;
+                }
+
             }
             catch (Exception ex)
             {

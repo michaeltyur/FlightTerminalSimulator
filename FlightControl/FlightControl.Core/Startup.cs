@@ -47,7 +47,7 @@ namespace FlightControl.Core
             // Place Map/Book Project
             services.AddSingleton<IFileProvider>(
             new PhysicalFileProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), "Images/PlaceBookImages")));
+                Path.Combine(Directory.GetCurrentDirectory(), @"Images\PlaceBookImages")));
 
             services.AddCors(o => o.AddPolicy(CorsPolicy, builder => {
                 builder
