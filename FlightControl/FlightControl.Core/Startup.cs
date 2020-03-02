@@ -47,7 +47,7 @@ namespace FlightControl.Core
             // Place Map/Book Project
             services.AddSingleton<IFileProvider>(
             new PhysicalFileProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), @"Images\PlaceBookImages")));
+                Path.Combine(Directory.GetCurrentDirectory(), "Images/PlaceBookImages")));
 
             services.AddCors(o => o.AddPolicy(CorsPolicy, builder => {
                 builder
@@ -57,7 +57,7 @@ namespace FlightControl.Core
                 //.WithOrigins("http://localhost:4200")
                 .WithOrigins("http://michaelt-001-site2.btempurl.com")
                 .WithOrigins("https://live-project.space")
-                .WithOrigins("http://live-project.space")
+                .WithOrigins("https://tedious-literature.firebaseapp.com")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
@@ -89,16 +89,14 @@ namespace FlightControl.Core
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //app.Use(async (context, next) => {
-            //    await next();
-            //    if (context.Response.StatusCode == 404 &&
-            //       !Path.HasExtension(context.Request.Path.Value) &&
-            //       !context.Request.Path.Value.StartsWith("/api/"))
-            //    {
-            //        context.Request.Path = "/index.html";
-            //        await next();
-            //    }
-            //});
+            app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images", @"PlaceBookImages")),
+                RequestPath = new PathString("/Images/PlaceBookImages")
+            });
+
 
             if (env.IsDevelopment())
             {

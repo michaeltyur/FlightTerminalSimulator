@@ -31,6 +31,7 @@ namespace FlightControl.Core.Controllers
         }
 
         #region Place
+
         [HttpGet("GetAllPlaces")]
         public List<Place> GetAllPlaces()
         {
@@ -247,6 +248,7 @@ namespace FlightControl.Core.Controllers
         [HttpPost("UploadFiles")]
         public async Task<ServerResponse> UploadFiles([FromForm]ImagesRequest imagesRequest)
         {
+            string serverDirectory = @"https://live-project.space/Images/PlaceBookImages/";
             ServerResponse serverResponse = new ServerResponse();
             int parentID = imagesRequest.ParentID;
             string parentName = imagesRequest.ParentName;
@@ -284,7 +286,7 @@ namespace FlightControl.Core.Controllers
                         {
                             PlaceID = parentID,
                             Name = parentName,
-                            ImagePath = path,
+                            ImagePath = serverDirectory + fullFileName,
                             FileName = fullFileName
                         };
 
@@ -301,7 +303,7 @@ namespace FlightControl.Core.Controllers
                         {
                             BookID = parentID,
                             Name = parentName,
-                            ImagePath = path,
+                            ImagePath = serverDirectory + fullFileName,
                             FileName = fullFileName
                         };
 

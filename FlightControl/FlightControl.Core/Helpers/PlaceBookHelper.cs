@@ -81,7 +81,7 @@ namespace FlightControl.Core.Helpers
             try
             {
                 int id = 0;
-                string sql = $"INSERT INTO ErrorLog (Title,[Description]) OUTPUT INSERTED.ErrorLogID VALUES('{errorLog.Title}','{errorLog.Description}')";
+                string sql = $"INSERT INTO ErrorLog (Title,[Description],CreateTime) OUTPUT INSERTED.ErrorLogID VALUES('{errorLog.Title}','{errorLog.Description}',GETUTCDATE())";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
@@ -171,7 +171,7 @@ namespace FlightControl.Core.Helpers
         {
             int result = 0;
             string sql = $" UPDATE dbo.Place SET Name = N'{place.Name}' ";
-            if (!string.IsNullOrEmpty(place.Comment)) sql += $", Text = N'{place.Comment}' ";
+            if (!string.IsNullOrEmpty(place.Comment)) sql += $", Comment = N'{place.Comment}' ";
             if (!string.IsNullOrEmpty(place.Text)) sql += $", Text = N'{place.Text}' ";
             if (place.Latitude > 0) sql += $", Latitude = '{place.Latitude}' ";
             if (place.Longitude > 0) sql += $" , Longitude = '{place.Longitude}' ";
