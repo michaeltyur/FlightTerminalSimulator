@@ -137,6 +137,8 @@ namespace FlightControl.Core.Controllers
             }
 
         }
+
+        
         #endregion
 
         #region Book
@@ -416,6 +418,22 @@ namespace FlightControl.Core.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet("GetRandomPlaceImages")]
+        public List<PlaceImages> GetRandomPlaceImages()
+        {
+            try
+            {
+                return placeBookHelper.GetRandomPlaceImages();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog errorLog = new ErrorLog { Title = "Get Random PlaceImages", Description = ex.ToString() };
+                placeBookHelper.WriteErrorLog(errorLog);
+                throw ex;
+            }
+        }
+
         #endregion
 
 

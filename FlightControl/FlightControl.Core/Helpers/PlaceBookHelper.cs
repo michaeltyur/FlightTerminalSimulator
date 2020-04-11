@@ -246,6 +246,8 @@ namespace FlightControl.Core.Helpers
             }
             return result;
         }
+
+       
         #endregion
 
         #region Book
@@ -430,6 +432,38 @@ namespace FlightControl.Core.Helpers
                 throw ex;
             }
         }
+
+        public List<PlaceImages> GetRandomPlaceImages()
+        {
+            List<PlaceImages> images = new List<PlaceImages>();
+            string sql = "GetRandomImages";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        PlaceImages image = new PlaceImages();
+                        image.PlaceImagesID = (int)reader["PlaceImagesID"];
+                        image.PlaceID = (int)reader["PlaceID"];
+                        image.Name = DBNull.Value != reader["Name"] ? reader["Name"].ToString() : default;
+                        image.ImagePath = DBNull.Value != reader["ImagePath"] ? reader["ImagePath"].ToString() : default;
+                        image.FileName = DBNull.Value != reader["FileName"] ? reader["FileName"].ToString() : default;
+                        images.Add(image);
+                    }
+
+
+                    connection.Close();
+                }
+
+            }
+            return images;
+        }
         #endregion
 
         #region Book Image
@@ -486,6 +520,8 @@ namespace FlightControl.Core.Helpers
             }
         }
         #endregion
+
+        
     }
 
 }
