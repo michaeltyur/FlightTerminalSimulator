@@ -25,7 +25,7 @@
     "@types/jquery": "^3.3.30",
     "bootstrap": "^4.3.1",
     "core-js": "^2.6.9",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "rxjs": "~6.3.3",
     "zone.js": "^0.8.29"
   },
