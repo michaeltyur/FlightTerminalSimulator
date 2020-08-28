@@ -2,6 +2,7 @@
 using DAL.BL;
 using DAL.Interface;
 using FlightControl.Core.Emitters;
+using FlightControl.Core.Helpers;
 using FlightControl.Core.Hubs;
 using FlightControl.Core.Interfaces;
 using FlightTerminalDb;
@@ -15,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Models.Interface;
+using Models.Interfaces;
 using System;
 using System.IO;
 
@@ -42,7 +45,9 @@ namespace FlightControl.Core
 
             services.AddSingleton<ITerminalContext, TerminalContext>();//Add Flight manager as singelton
             services.AddSingleton<ITerminalEmitter, TerminalEmitter>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();//IPlaceBookHelper
+            services.AddSingleton<IPlaceBookHelper, PlaceBookHelper>();
+            services.AddSingleton<IStringHelper, StringHelper>();
 
             // Place Map/Book Project
             services.AddSingleton<IFileProvider>(
@@ -56,8 +61,9 @@ namespace FlightControl.Core
                 //.WithOrigins("http://localhost:4300")
                 //.WithOrigins("http://localhost:4200")
                 .WithOrigins("http://michaelt-001-site2.btempurl.com")
-                .WithOrigins("https://live-project.space")
+                .WithOrigins(Configuration["CustomData:SiteHostingAddress"])
                 .WithOrigins("https://tedious-literature.firebaseapp.com")
+                .WithOrigins("https://tedious-literature.web.app")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
@@ -89,7 +95,7 @@ namespace FlightControl.Core
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseStaticFiles();
+           // app.UseStaticFiles();
 
             app.UseStaticFiles(new StaticFileOptions()
             {

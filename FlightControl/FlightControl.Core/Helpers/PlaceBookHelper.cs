@@ -1,4 +1,7 @@
-﻿using Models.PlaceBookModels;
+﻿using Microsoft.Extensions.Configuration;
+using Models.Interface;
+using Models.Interfaces;
+using Models.PlaceBookModels;
 using Models.PlaceBookModels.Interface;
 using System;
 using System.Collections.Generic;
@@ -10,12 +13,14 @@ using System.Threading.Tasks;
 
 namespace FlightControl.Core.Helpers
 {
-    public class PlaceBookHelper
+    public class PlaceBookHelper: IPlaceBookHelper
     {
         private readonly string connectionString;
-        public PlaceBookHelper(string connectionString)
+        private IStringHelper stringHelper;
+        public PlaceBookHelper(IConfiguration configuration, IStringHelper stringHelper)
         {
-            this.connectionString = connectionString;
+            this.connectionString = configuration["ConnectionStrings:MapDBConnection"];
+            this.stringHelper = stringHelper;
         }
         public string GetContentType(string path)
         {
@@ -64,7 +69,6 @@ namespace FlightControl.Core.Helpers
             }
             return fileName;
         }
-
 
         public bool DeleteFileLocal(string fileName)
         {
@@ -399,6 +403,10 @@ namespace FlightControl.Core.Helpers
                         image.Name = DBNull.Value != reader["Name"] ? reader["Name"].ToString() : default;
                         image.ImagePath = DBNull.Value != reader["ImagePath"] ? reader["ImagePath"].ToString() : default;
                         image.FileName = DBNull.Value != reader["FileName"] ? reader["FileName"].ToString() : default;
+
+                        // Change Domain Bug
+                        image.ImagePath = stringHelper.GetActualImagePath(image.ImagePath);
+
                         images.Add(image);
                     }
 
@@ -454,6 +462,9 @@ namespace FlightControl.Core.Helpers
                         image.Name = DBNull.Value != reader["Name"] ? reader["Name"].ToString() : default;
                         image.ImagePath = DBNull.Value != reader["ImagePath"] ? reader["ImagePath"].ToString() : default;
                         image.FileName = DBNull.Value != reader["FileName"] ? reader["FileName"].ToString() : default;
+
+                        image.ImagePath = stringHelper.GetActualImagePath(image.ImagePath);
+
                         images.Add(image);
                     }
 
@@ -486,6 +497,10 @@ namespace FlightControl.Core.Helpers
                         image.Name = DBNull.Value != reader["Name"] ? reader["Name"].ToString() : default;
                         image.ImagePath = DBNull.Value != reader["ImagePath"] ? reader["ImagePath"].ToString() : default;
                         image.FileName = DBNull.Value != reader["FileName"] ? reader["FileName"].ToString() : default;
+
+                        // Change Domain Bug
+                        image.ImagePath = stringHelper.GetActualImagePath(image.ImagePath);
+
                         images.Add(image);
                     }
 

@@ -9,6 +9,7 @@ using FlightControl.Core.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Models.Interfaces;
 using Models.PlaceBookModels;
 using Models.PlaceBookModels.Interface;
 
@@ -20,14 +21,13 @@ namespace FlightControl.Core.Controllers
     {
         //private const string CONNECTION_DB_STRING = "Data Source=SQL5052.site4now.net;Initial Catalog=DB_A4A6EE_map;User Id=DB_A4A6EE_map_admin;Password=1950t03b03;";
         public IConfiguration Configuration { get; }
-        private PlaceBookHelper placeBookHelper;
+        private IPlaceBookHelper placeBookHelper;
         private const string fileDirectoryPath = @"Images\PlaceBookImages";
-        private readonly string connectionString;
-        public PlaceBookController(IConfiguration configuration)
+        public PlaceBookController(IConfiguration configuration, IPlaceBookHelper placeBookHelper)
         {
             Configuration = configuration;
-            connectionString = Configuration["ConnectionStrings:MapDBConnection"];
-            placeBookHelper = new PlaceBookHelper(connectionString);
+           // connectionString = Configuration["ConnectionStrings:MapDBConnection"];
+            this.placeBookHelper = placeBookHelper;
         }
 
         #region Place
@@ -250,7 +250,7 @@ namespace FlightControl.Core.Controllers
         [HttpPost("UploadFiles")]
         public async Task<ServerResponse> UploadFiles([FromForm]ImagesRequest imagesRequest)
         {
-            string serverDirectory = @"https://live-project.space/Images/PlaceBookImages/";
+            string serverDirectory = $@"*/Images/PlaceBookImages/";
             ServerResponse serverResponse = new ServerResponse();
             int parentID = imagesRequest.ParentID;
             string parentName = imagesRequest.ParentName;
